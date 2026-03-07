@@ -74,4 +74,3 @@ EOF
           git add latest.json
           git commit -m 'Update latest Intervals.icu data [skip ci]' || echo 'No changes to commit'
           git push
-
