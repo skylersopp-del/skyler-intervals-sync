@@ -3,7 +3,7 @@ name: Sync Intervals.icu Data
 on:
   schedule:
     - cron: '0 */4 * * *'  # Every 4 hours
-  workflow_dispatch:
+  workflow_dispatch:       # This enables manual run once UI registers
 
 jobs:
   sync:
@@ -24,17 +24,15 @@ jobs:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           API_KEY: ${{ secrets.INTERVALS_API_KEY }}
         run: |
-          python - <<'EOF'
+          python3 - <<EOF
 import requests
 import json
 import os
 from datetime import datetime, timedelta
 
-# Pull env vars inside Python
 athlete_id = os.environ['ATHLETE_ID']
 api_key = os.environ['API_KEY']
 
-# Basic Auth: username='API_KEY' (literal string), password=the actual key
 auth = ('API_KEY', api_key)
 
 base_url = f"https://intervals.icu/api/v1/athlete/{athlete_id}"
@@ -68,8 +66,6 @@ data = {
 with open("latest.json", "w") as f:
     json.dump(data, f, indent=2)
 EOF
-        shell: bash
-
       - name: Commit changes
         run: |
           git config --global user.name 'GitHub Action'
