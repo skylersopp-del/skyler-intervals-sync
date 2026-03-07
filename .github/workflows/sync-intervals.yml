@@ -3,7 +3,7 @@ name: Sync Intervals.icu Data
 on:
   schedule:
     - cron: '0 */4 * * *'  # Every 4 hours
-  workflow_dispatch:       # Enables manual run button
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -24,49 +24,51 @@ jobs:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           API_KEY: ${{ secrets.INTERVALS_API_KEY }}
         run: |
-          #!/usr/bin/env python3
-          import requests
-          import json
-          from datetime import datetime, timedelta
+          python - <<'EOF'
+import requests
+import json
+import os
+from datetime import datetime, timedelta
 
-          # Basic Auth: username='API_KEY' (literal), password=your key
-          auth = ('API_KEY', API_KEY)  # Env var substituted here
+# Pull env vars inside Python
+athlete_id = os.environ['ATHLETE_ID']
+api_key = os.environ['API_KEY']
 
-          base_url = f"https://intervals.icu/api/v1/athlete/{ATHLETE_ID}"
+# Basic Auth: username='API_KEY' (literal string), password=the actual key
+auth = ('API_KEY', api_key)
 
-          today = datetime.now().strftime("%Y-%m-%d")
-          oldest = (datetime.now() - timedelta(days=28)).strftime("%Y-%m-%d")
+base_url = f"https://intervals.icu/api/v1/athlete/{athlete_id}"
 
-          # Latest fitness
-          fitness_url = f"{base_url}/fitness?newest={today}&limit=1"
-          fitness_resp = requests.get(fitness_url, auth=auth)
-          fitness = fitness_resp.json()[0] if fitness_resp.ok and fitness_resp.json() else {}
+today = datetime.now().strftime("%Y-%m-%d")
+oldest = (datetime.now() - timedelta(days=28)).strftime("%Y-%m-%d")
 
-          # Latest wellness
-          wellness_url = f"{base_url}/wellness?newest={today}&limit=1"
-          wellness_resp = requests.get(wellness_url, auth=auth)
-          wellness = wellness_resp.json()[0] if wellness_resp.ok and wellness_resp.json() else {}
+fitness_url = f"{base_url}/fitness?newest={today}&limit=1"
+fitness_resp = requests.get(fitness_url, auth=auth)
+fitness = fitness_resp.json()[0] if fitness_resp.ok and fitness_resp.json() else {}
 
-          # Athlete settings
-          athlete_resp = requests.get(base_url, auth=auth)
-          athlete = athlete_resp.json() if athlete_resp.ok else {}
+wellness_url = f"{base_url}/wellness?newest={today}&limit=1"
+wellness_resp = requests.get(wellness_url, auth=auth)
+wellness = wellness_resp.json()[0] if wellness_resp.ok and wellness_resp.json() else {}
 
-          # Recent activities
-          activities_url = f"{base_url}/activities?oldest={oldest}"
-          activities_resp = requests.get(activities_url, auth=auth)
-          activities = activities_resp.json() if activities_resp.ok else []
+athlete_resp = requests.get(base_url, auth=auth)
+athlete = athlete_resp.json() if athlete_resp.ok else {}
 
-          data = {
-              "timestamp": datetime.now().isoformat(),
-              "fitness_latest": fitness,
-              "wellness_latest": wellness,
-              "athlete_settings": athlete,
-              "recent_activities": activities
-          }
+activities_url = f"{base_url}/activities?oldest={oldest}"
+activities_resp = requests.get(activities_url, auth=auth)
+activities = activities_resp.json() if activities_resp.ok else []
 
-          with open("latest.json", "w") as f:
-              json.dump(data, f, indent=2)
-        shell: python
+data = {
+    "timestamp": datetime.now().isoformat(),
+    "fitness_latest": fitness,
+    "wellness_latest": wellness,
+    "athlete_settings": athlete,
+    "recent_activities": activities
+}
+
+with open("latest.json", "w") as f:
+    json.dump(data, f, indent=2)
+EOF
+        shell: bash
 
       - name: Commit changes
         run: |
