@@ -5,6 +5,9 @@ on:
     - cron: '0 */4 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write   # Grants write access to repository contents (required for git push)
+
 jobs:
   sync:
     runs-on: ubuntu-latest
