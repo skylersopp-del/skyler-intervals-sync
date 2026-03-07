@@ -1,0 +1,71 @@
+name: Sync Intervals.icu Data
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'  # Every 4 hours
+  workflow_dispatch:       # Manual trigger button
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Fetch and save latest data
+        env:
+          ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
+          API_KEY: ${{ secrets.INTERVALS_API_KEY }}
+        run: |
+          python -c "
+          import requests
+          import json
+          from datetime import datetime, timedelta
+
+          auth = ('API_KEY', '${{ secrets.INTERVALS_API_KEY }}')  # Basic auth: username=API_KEY
+          base_url = f'https://intervals.icu/api/v1/athlete/{ATHLETE_ID}'
+
+          headers = {}  # No extra headers needed for basic auth
+
+          # Latest fitness (CTL/ATL/TSB etc.)
+          fitness_resp = requests.get(f'{base_url}/fitness?newest={datetime.now().strftime("%Y-%m-%d")}', auth=auth)
+          fitness = fitness_resp.json()[-1] if fitness_resp.ok and fitness_resp.json() else {}
+
+          # Latest wellness (HRV, RHR, sleep, etc.)
+          wellness_resp = requests.get(f'{base_url}/wellness?newest={datetime.now().strftime("%Y-%m-%d")}', auth=auth)
+          wellness = wellness_resp.json()[-1] if wellness_resp.ok and wellness_resp.json() else {}
+
+          # Athlete settings (FTP, thresholds, etc.)
+          athlete = requests.get(base_url, auth=auth).json()
+
+          # Recent activities (last 28 days for run/cycle/lift/recovery)
+          oldest_date = (datetime.now() - timedelta(days=28)).strftime('%Y-%m-%d')
+          activities_resp = requests.get(f'{base_url}/activities?oldest={oldest_date}', auth=auth)
+          activities = activities_resp.json() if activities_resp.ok else []
+
+          data = {
+              'timestamp': datetime.now().isoformat(),
+              'fitness_latest': fitness,
+              'wellness_latest': wellness,
+              'athlete_settings': athlete,
+              'recent_activities': activities
+          }
+
+          with open('latest.json', 'w') as f:
+              json.dump(data, f, indent=2)
+          "
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add latest.json
+          git commit -m 'Update latest Intervals.icu data [skip ci]' || echo 'No changes'
+          git push
