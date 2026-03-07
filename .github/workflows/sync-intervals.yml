@@ -3,7 +3,7 @@ name: Sync Intervals.icu Data
 on:
   schedule:
     - cron: '0 */4 * * *'  # Every 4 hours
-  workflow_dispatch:       # Manual trigger button
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -23,49 +23,54 @@ jobs:
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           API_KEY: ${{ secrets.INTERVALS_API_KEY }}
-        run: |
-          python -c "
-          import requests
-          import json
-          from datetime import datetime, timedelta
+        run: python - <<EOF
+import requests
+import json
+from datetime import datetime, timedelta
 
-          auth = ('API_KEY', '${{ secrets.INTERVALS_API_KEY }}')  # Basic auth: username=API_KEY
-          base_url = f'https://intervals.icu/api/v1/athlete/{ATHLETE_ID}'
+# Basic Auth: username = 'API_KEY' (literal string), password = your actual API key
+auth = ('API_KEY', '$API_KEY')  # GitHub substitutes $API_KEY with secret value
 
-          headers = {}  # No extra headers needed for basic auth
+base_url = f"https://intervals.icu/api/v1/athlete/$ATHLETE_ID"
 
-          # Latest fitness (CTL/ATL/TSB etc.)
-          fitness_resp = requests.get(f'{base_url}/fitness?newest={datetime.now().strftime("%Y-%m-%d")}', auth=auth)
-          fitness = fitness_resp.json()[-1] if fitness_resp.ok and fitness_resp.json() else {}
+today = datetime.now().strftime("%Y-%m-%d")
+oldest = (datetime.now() - timedelta(days=28)).strftime("%Y-%m-%d")
 
-          # Latest wellness (HRV, RHR, sleep, etc.)
-          wellness_resp = requests.get(f'{base_url}/wellness?newest={datetime.now().strftime("%Y-%m-%d")}', auth=auth)
-          wellness = wellness_resp.json()[-1] if wellness_resp.ok and wellness_resp.json() else {}
+# Latest fitness (CTL/ATL/TSB etc.) - limit to 1 most recent
+fitness_url = f"{base_url}/fitness?newest={today}&limit=1"
+fitness_resp = requests.get(fitness_url, auth=auth)
+fitness = fitness_resp.json()[0] if fitness_resp.ok and fitness_resp.json() else {}
 
-          # Athlete settings (FTP, thresholds, etc.)
-          athlete = requests.get(base_url, auth=auth).json()
+# Latest wellness (HRV, RHR, sleep etc.)
+wellness_url = f"{base_url}/wellness?newest={today}&limit=1"
+wellness_resp = requests.get(wellness_url, auth=auth)
+wellness = wellness_resp.json()[0] if wellness_resp.ok and wellness_resp.json() else {}
 
-          # Recent activities (last 28 days for run/cycle/lift/recovery)
-          oldest_date = (datetime.now() - timedelta(days=28)).strftime('%Y-%m-%d')
-          activities_resp = requests.get(f'{base_url}/activities?oldest={oldest_date}', auth=auth)
-          activities = activities_resp.json() if activities_resp.ok else []
+# Athlete settings (thresholds, FTP etc.)
+athlete_resp = requests.get(base_url, auth=auth)
+athlete = athlete_resp.json() if athlete_resp.ok else {}
 
-          data = {
-              'timestamp': datetime.now().isoformat(),
-              'fitness_latest': fitness,
-              'wellness_latest': wellness,
-              'athlete_settings': athlete,
-              'recent_activities': activities
-          }
+# Recent activities (last 28 days, includes run/cycle/lift with notes)
+activities_url = f"{base_url}/activities?oldest={oldest}"
+activities_resp = requests.get(activities_url, auth=auth)
+activities = activities_resp.json() if activities_resp.ok else []
 
-          with open('latest.json', 'w') as f:
-              json.dump(data, f, indent=2)
-          "
+data = {
+    "timestamp": datetime.now().isoformat(),
+    "fitness_latest": fitness,
+    "wellness_latest": wellness,
+    "athlete_settings": athlete,
+    "recent_activities": activities
+}
+
+with open("latest.json", "w") as f:
+    json.dump(data, f, indent=2)
+EOF
 
       - name: Commit changes
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           git add latest.json
-          git commit -m 'Update latest Intervals.icu data [skip ci]' || echo 'No changes'
+          git commit -m 'Update latest Intervals.icu data [skip ci]' || echo 'No changes to commit'
           git push
