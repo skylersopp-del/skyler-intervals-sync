@@ -1,12 +1,12 @@
-name: Daily Intervals.icu Full History Sync
+name: Daily Intervals.icu Full History + Latest Run Streams Sync
 
 on:
   schedule:
-    - cron: '0 9 * * *'  # Runs daily at 9am UTC
-  workflow_dispatch:     # Allows manual trigger
+    - cron: '0 9 * * *'  # 9am UTC daily
+  workflow_dispatch:
 
 permissions:
-  contents: write   # This grants GITHUB_TOKEN write access for pushes
+  contents: write
 
 jobs:
   sync:
@@ -14,23 +14,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download complete history — ALL activity types
+      - name: Download full summary activities CSV
         run: |
           mkdir -p data/history
           TODAY=$(date +%Y-%m-%d)
 
-          # NO 'oldest' parameter = pulls EVERY activity ever (runs, rides, strength, walks, everything)
           curl -u ${{ secrets.INTERVALS_API_KEY }}: -H "Accept: text/csv" \
             "https://intervals.icu/api/v1/athlete/${{ secrets.INTERVALS_ATHLETE_ID }}/activities.csv" \
             -o data/activities.csv
 
-          # Permanent daily archive so nothing is ever erased — full snapshot saved forever
           cp data/activities.csv "data/history/activities_${TODAY}.csv"
+
+      - name: Download detailed streams CSV for latest run
+        run: |
+          # Find latest run ID (assumes activities.csv has 'id' and 'type' columns; sorts by start_time descending)
+          LATEST_RUN_ID=$(tail -n +2 data/activities.csv | awk -F, '$3 == "Run" {print $1, $2}' | sort -k2r | head -1 | awk '{print $1}')
+
+          if [ -z "$LATEST_RUN_ID" ]; then
+            echo "No recent run found"
+            exit 0
+          fi
+
+          curl -u ${{ secrets.INTERVALS_API_KEY }}: -H "Accept: text/csv" \
+            "https://intervals.icu/api/v1/activity/${LATEST_RUN_ID}/streams.csv" \
+            -o data/latest_run_streams.csv
+
+          cp data/latest_run_streams.csv "data/history/latest_run_streams_${TODAY}.csv"
 
       - name: Commit changes
         run: |
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
           git add data/
-          git commit -m "Full history sync ${TODAY}" || echo "No changes to commit"
+          git commit -m "Full sync + latest run streams ${TODAY}" || echo "No changes"
           git push
