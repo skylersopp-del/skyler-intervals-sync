@@ -1,0 +1,33 @@
+name: Daily Intervals.icu Full History Sync
+
+on:
+  schedule:
+    - cron: '0 9 * * *'   # runs every day at 9am UTC
+  workflow_dispatch:      # click "Run workflow" anytime
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download complete history — ALL activity types
+        run: |
+          mkdir -p data/history
+          TODAY=$(date +%Y-%m-%d)
+          
+          # NO 'oldest' parameter = pulls EVERY activity ever (runs, rides, strength, walks, everything)
+          curl -u ${{ secrets.INTERVALS_API_KEY }}: -H "Accept: text/csv" \
+            "https://intervals.icu/api/v1/athlete/${{ secrets.INTERVALS_ATHLETE_ID }}/activities.csv" \
+            -o data/activities.csv
+
+          # Permanent daily archive so nothing is ever erased — full snapshot saved forever
+          cp data/activities.csv "data/history/activities_${TODAY}.csv"
+
+      - name: Commit changes
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add data/
+          git commit -m "Full history sync ${TODAY}" || echo "No changes"
+          git push
