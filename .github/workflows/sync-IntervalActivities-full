@@ -2,8 +2,8 @@ name: Daily Intervals.icu Full History Sync
 
 on:
   schedule:
-    - cron: '0 9 * * *'   # runs every day at 9am UTC
-  workflow_dispatch:      # click "Run workflow" anytime
+    - cron: '0 9 * * *'  # Runs daily at 9am UTC
+  workflow_dispatch:     # Allows manual trigger
 
 jobs:
   sync:
@@ -15,7 +15,7 @@ jobs:
         run: |
           mkdir -p data/history
           TODAY=$(date +%Y-%m-%d)
-          
+
           # NO 'oldest' parameter = pulls EVERY activity ever (runs, rides, strength, walks, everything)
           curl -u ${{ secrets.INTERVALS_API_KEY }}: -H "Accept: text/csv" \
             "https://intervals.icu/api/v1/athlete/${{ secrets.INTERVALS_ATHLETE_ID }}/activities.csv" \
@@ -29,5 +29,5 @@ jobs:
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
           git add data/
-          git commit -m "Full history sync ${TODAY}" || echo "No changes"
+          git commit -m "Full history sync ${TODAY}" || echo "No changes to commit"
           git push
