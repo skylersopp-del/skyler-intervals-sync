@@ -19,8 +19,8 @@ jobs:
           mkdir -p data/history
           TODAY=$(date +%Y-%m-%d)
 
-          curl -v -u API_KEY:${{ secrets.INTERVALS_API_KEY_TEST }}: -H "Accept: text/csv" \
-            "https://intervals.icu/api/v1/athlete/${{ secrets.INTERVALS_ATHLETE_ID }}/activities.csv" \
+          curl -v -u API_KEY:6pmirqiemk2ca5vr60ldosi85 -H "Accept: text/csv" \
+            "https://intervals.icu/api/v1/athlete/i155257/activities.csv" \
             -o data/activities.csv
 
           cp data/activities.csv "data/history/activities_${TODAY}.csv"
@@ -35,7 +35,7 @@ jobs:
             exit 0
           fi
 
-          curl -u ${{ secrets.INTERVALS_API_KEY }}: -H "Accept: text/csv" \
+          curl -v -u API_KEY:6pmirqiemk2ca5vr60ldosi85 -H "Accept: text/csv" \
             "https://intervals.icu/api/v1/activity/${LATEST_RUN_ID}/streams.csv" \
             -o data/latest_run_streams.csv
 
