@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-09T10:30:57.865769",
+  "timestamp": "2026-03-09T14:40:01.315886",
   "fitness_latest": {},
   "wellness_latest": {
     "id": "2019-05-26",
@@ -106,10 +106,10 @@
     "date_format": "EEE_dd_MMM_yyyy",
     "time_format": "hh_mm_a",
     "visibility": "PRIVATE",
-    "icu_last_seen": "2026-03-08T20:01:18.732+00:00",
+    "icu_last_seen": "2026-03-09T13:29:33.972+00:00",
     "status": "ACTIVE",
     "status_updated": "2026-02-07T02:22:11.514+00:00",
-    "icu_resting_hr": 54,
+    "icu_resting_hr": 55,
     "icu_weight": 75.069534,
     "icu_weight_sync": "NONE",
     "icu_activated": "2023-09-22T00:00:00.000+00:00",
@@ -156,7 +156,7 @@
     "icu_form_as_percent": false,
     "icu_mmp_days": 90,
     "icu_wellness_prompt": true,
-    "wellness_last_prompt_date": "2026-03-08",
+    "wellness_last_prompt_date": "2026-03-09",
     "icu_wellness_keys": [
       "weight",
       "restingHR",
