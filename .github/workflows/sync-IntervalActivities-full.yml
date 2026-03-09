@@ -1,9 +1,9 @@
-name: Daily Intervals.icu Full History + ALL Previous-Day Streams
+name: Daily Intervals.icu Full History + Last 7 Days Streams
 
 on:
   schedule:
-    - cron: '0 9 * * *'   # runs daily at 9am UTC (previous day data)
-  workflow_dispatch:      # manual run = current day data
+    - cron: '0 9 * * *'   # daily at 9am UTC
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -14,34 +14,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download full summary + all previous-day streams
+      - name: Download full summary + ALL last-7-days streams
         run: |
           mkdir -p data/history
           TODAY=$(date +%Y-%m-%d)
-          YESTERDAY=$(date -d "yesterday" +%Y-%m-%d)
 
-          # Summary CSV (full history)
+          # Full summary CSV
           curl -v -u API_KEY:6pmirqiemk2ca5vr60ldosi85 -H "Accept: text/csv" \
             "https://intervals.icu/api/v1/athlete/i155257/activities.csv" \
             -o data/activities.csv
           cp data/activities.csv "data/history/activities_${TODAY}.csv"
 
-          # Find all activities from previous day (or today on manual run)
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            TARGET_DATE=$TODAY
-          else
-            TARGET_DATE=$YESTERDAY
-          fi
-
-          echo "Downloading streams for date: $TARGET_DATE"
-
-          # Loop through every activity on that day and download its streams
+          # Download streams for every activity in the last 7 days
+          echo "Downloading streams for last 7 days..."
           tail -n +2 data/activities.csv | while IFS=, read -r id start_date_local name type rest; do
-            if [[ $start_date_local == *"$TARGET_DATE"* ]]; then
-              echo "Downloading streams for activity $id ($name)"
-              curl -v -u API_KEY:6pmirqiemk2ca5vr60ldosi85 -H "Accept: text/csv" \
-                "https://intervals.icu/api/v1/activity/$id/streams.csv" \
-                -o "data/history/streams_${TODAY}_${id}.csv"
+            # Check if activity is within last 7 days
+            if [[ $start_date_local =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2} ]]; then
+              ACTIVITY_DATE=${start_date_local:0:10}
+              DAYS_AGO=$(date -d "$TODAY" +%s)
+              ACTIVITY_DAYS_AGO=$(date -d "$ACTIVITY_DATE" +%s)
+              DIFF=$(( (DAYS_AGO - ACTIVITY_DAYS_AGO) / 86400 ))
+              if [ $DIFF -ge 0 ] && [ $DIFF -le 7 ]; then
+                echo "Downloading streams for activity $id ($name on $ACTIVITY_DATE)"
+                curl -v -u API_KEY:6pmirqiemk2ca5vr60ldosi85 -H "Accept: text/csv" \
+                  "https://intervals.icu/api/v1/activity/$id/streams.csv" \
+                  -o "data/history/streams_${TODAY}_${id}.csv"
+              fi
             fi
           done
 
@@ -50,5 +48,5 @@ jobs:
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
           git add data/
-          git commit -m "Full sync + all streams for ${TODAY}" || echo "No changes"
+          git commit -m "Full sync + last 7 days streams ${TODAY}" || echo "No changes"
           git push
