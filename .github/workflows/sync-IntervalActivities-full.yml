@@ -1,4 +1,4 @@
-name: Daily Intervals.icu Full History + Last 7 Days Streams
+name: Daily Intervals.icu Full History + Last 7 Days All Activities Streams
 
 on:
   schedule:
@@ -14,31 +14,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download full summary + ALL last-7-days streams
+      - name: Download full summary + ALL last-7-days streams (all types)
         run: |
           mkdir -p data/history
           TODAY=$(date +%Y-%m-%d)
 
-          # Full summary CSV
+          # Full summary CSV (always fresh)
           curl -v -u API_KEY:6pmirqiemk2ca5vr60ldosi85 -H "Accept: text/csv" \
             "https://intervals.icu/api/v1/athlete/i155257/activities.csv" \
             -o data/activities.csv
           cp data/activities.csv "data/history/activities_${TODAY}.csv"
 
-          # Download streams for every activity in the last 7 days
-          echo "Downloading streams for last 7 days..."
+          # Download streams for EVERY activity in the last 7 days (no type filter)
+          echo "Downloading streams for all activities in last 7 days..."
           tail -n +2 data/activities.csv | while IFS=, read -r id start_date_local name type rest; do
-            # Check if activity is within last 7 days
+            # Extract date from start_date_local (first 10 chars: YYYY-MM-DD)
             if [[ $start_date_local =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2} ]]; then
               ACTIVITY_DATE=${start_date_local:0:10}
               DAYS_AGO=$(date -d "$TODAY" +%s)
-              ACTIVITY_DAYS_AGO=$(date -d "$ACTIVITY_DATE" +%s)
-              DIFF=$(( (DAYS_AGO - ACTIVITY_DAYS_AGO) / 86400 ))
+              ACTIVITY_EPOCH=$(date -d "$ACTIVITY_DATE" +%s)
+              DIFF=$(( (DAYS_AGO - ACTIVITY_EPOCH) / 86400 ))
               if [ $DIFF -ge 0 ] && [ $DIFF -le 7 ]; then
-                echo "Downloading streams for activity $id ($name on $ACTIVITY_DATE)"
+                echo "Downloading streams for activity $id ($type: $name on $ACTIVITY_DATE)"
                 curl -v -u API_KEY:6pmirqiemk2ca5vr60ldosi85 -H "Accept: text/csv" \
                   "https://intervals.icu/api/v1/activity/$id/streams.csv" \
-                  -o "data/history/streams_${TODAY}_${id}.csv"
+                  -o "data/history/streams_${TODAY}_${id}.csv" || echo "Failed to download streams for $id"
               fi
             fi
           done
@@ -48,5 +48,5 @@ jobs:
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
           git add data/
-          git commit -m "Full sync + last 7 days streams ${TODAY}" || echo "No changes"
+          git commit -m "Full sync + last 7 days all activities streams ${TODAY}" || echo "No changes"
           git push
