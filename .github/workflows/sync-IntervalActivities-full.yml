@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download full summary + ALL last-7-days streams (all types)
+      - name: Download full summary + ALL last-7-days streams (all types, dated+type filename)
         run: |
           mkdir -p data/history
           TODAY=$(date +%Y-%m-%d)
@@ -35,10 +35,13 @@ jobs:
               ACTIVITY_EPOCH=$(date -d "$ACTIVITY_DATE" +%s)
               DIFF=$(( (DAYS_AGO - ACTIVITY_EPOCH) / 86400 ))
               if [ $DIFF -ge 0 ] && [ $DIFF -le 7 ]; then
-                echo "Downloading streams for activity $id ($type: $name on $ACTIVITY_DATE)"
+                # Clean type for filename (lowercase, replace spaces/special chars)
+                CLEAN_TYPE=$(echo "$type" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/_/g')
+                FILENAME="streams_${TODAY}_${ACTIVITY_DATE}_${CLEAN_TYPE}_${id}.csv"
+                echo "Downloading streams for $ACTIVITY_DATE $type activity $id ($name) → $FILENAME"
                 curl -v -u API_KEY:6pmirqiemk2ca5vr60ldosi85 -H "Accept: text/csv" \
                   "https://intervals.icu/api/v1/activity/$id/streams.csv" \
-                  -o "data/history/streams_${TODAY}_${id}.csv" || echo "Failed to download streams for $id"
+                  -o "data/history/${FILENAME}" || echo "Failed to download streams for $id"
               fi
             fi
           done
