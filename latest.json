@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-13T05:11:44.795173",
+  "timestamp": "2026-03-13T08:35:59.911087",
   "fitness_latest": {},
   "wellness_latest": {
     "id": "2019-05-26",
@@ -79,6 +79,8 @@
     "city": "Brea",
     "state": "California",
     "country": "United States",
+    "countries": null,
+    "languages": null,
     "bikes": [
       {
         "id": "b13668476",
@@ -109,7 +111,7 @@
     "icu_last_seen": "2026-03-13T02:27:28.664+00:00",
     "status": "ACTIVE",
     "status_updated": "2026-02-07T02:22:11.514+00:00",
-    "icu_resting_hr": 57,
+    "icu_resting_hr": 59,
     "icu_weight": 75.069534,
     "icu_weight_sync": "NONE",
     "icu_activated": "2023-09-22T00:00:00.000+00:00",
