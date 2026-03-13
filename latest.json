@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-13T01:50:32.810851",
+  "timestamp": "2026-03-13T05:11:44.795173",
   "fitness_latest": {},
   "wellness_latest": {
     "id": "2019-05-26",
@@ -106,7 +106,7 @@
     "date_format": "EEE_dd_MMM_yyyy",
     "time_format": "hh_mm_a",
     "visibility": "PRIVATE",
-    "icu_last_seen": "2026-03-13T01:03:02.231+00:00",
+    "icu_last_seen": "2026-03-13T02:27:28.664+00:00",
     "status": "ACTIVE",
     "status_updated": "2026-02-07T02:22:11.514+00:00",
     "icu_resting_hr": 57,
