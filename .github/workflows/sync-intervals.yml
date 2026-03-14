@@ -2,11 +2,11 @@ name: Sync Intervals.icu Data
 
 on:
   schedule:
-    - cron: '0 */4 * * *'
+    - cron: '0 */4 * * *'  # Every 4 hours
   workflow_dispatch:
 
 permissions:
-  contents: write   # Grants write access to repository contents (required for git push)
+  contents: write  # Required for git push
 
 jobs:
   sync:
@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Fetch and save latest data
+      - name: Fetch and save latest data (existing logic)
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           API_KEY: ${{ secrets.INTERVALS_API_KEY }}
@@ -32,32 +32,23 @@ jobs:
           import json
           import os
           from datetime import datetime, timedelta
-
           athlete_id = os.environ['ATHLETE_ID']
           api_key = os.environ['API_KEY']
-
-          auth = ('API_KEY', api_key)
-
+          auth = (api_key, '')  # Basic Auth: key as username, empty password
           base_url = f'https://intervals.icu/api/v1/athlete/{athlete_id}'
-
           today = datetime.now().strftime('%Y-%m-%d')
-          oldest = (datetime.now() - timedelta(days=28)).strftime('%Y-%m-%d')
-
+          oldest_recent = (datetime.now() - timedelta(days=28)).strftime('%Y-%m-%d')
           fitness_url = f'{base_url}/fitness?newest={today}&limit=1'
           fitness_resp = requests.get(fitness_url, auth=auth)
           fitness = fitness_resp.json()[0] if fitness_resp.ok and fitness_resp.json() else {}
-
           wellness_url = f'{base_url}/wellness?newest={today}&limit=1'
           wellness_resp = requests.get(wellness_url, auth=auth)
           wellness = wellness_resp.json()[0] if wellness_resp.ok and wellness_resp.json() else {}
-
           athlete_resp = requests.get(base_url, auth=auth)
           athlete = athlete_resp.json() if athlete_resp.ok else {}
-
-          activities_url = f'{base_url}/activities?oldest={oldest}'
+          activities_url = f'{base_url}/activities?oldest={oldest_recent}'
           activities_resp = requests.get(activities_url, auth=auth)
           activities = activities_resp.json() if activities_resp.ok else []
-
           data = {
               'timestamp': datetime.now().isoformat(),
               'fitness_latest': fitness,
@@ -65,14 +56,61 @@ jobs:
               'athlete_settings': athlete,
               'recent_activities': activities
           }
-
           with open('latest.json', 'w') as f:
               json.dump(data, f, indent=2)
           "
+
+      - name: Fetch wellness history for history.json (last 90 days trends)
+        env:
+          ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
+          API_KEY: ${{ secrets.INTERVALS_API_KEY }}
+        run: |
+          python3 -c "
+          import requests
+          import json
+          import os
+          from datetime import datetime, timedelta
+          athlete_id = os.environ['ATHLETE_ID']
+          api_key = os.environ['API_KEY']
+          auth = (api_key, '')
+          base_url = f'https://intervals.icu/api/v1/athlete/{athlete_id}'
+          today = datetime.now().strftime('%Y-%m-%d')
+          oldest = (datetime.now() - timedelta(days=90)).strftime('%Y-%m-%d')
+          url = f'{base_url}/wellness?oldest={oldest}&newest={today}'
+          resp = requests.get(url, auth=auth)
+          if resp.ok:
+              with open('history.json', 'w') as f:
+                  json.dump(resp.json(), f, indent=2)
+          else:
+              print('Wellness history fetch failed:', resp.status_code, resp.text)
+          "
+
+      - name: Fetch recent interval activities for intervals.json
+        env:
+          ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
+          API_KEY: ${{ secrets.INTERVALS_API_KEY }}
+        run: |
+          python3 -c "
+          import requests
+          import json
+          import os
+          athlete_id = os.environ['ATHLETE_ID']
+          api_key = os.environ['API_KEY']
+          auth = (api_key, '')
+          base_url = f'https://intervals.icu/api/v1/athlete/{athlete_id}'
+          url = f'{base_url}/activities?has_intervals=true&limit=50'
+          resp = requests.get(url, auth=auth)
+          if resp.ok:
+              with open('intervals.json', 'w') as f:
+                  json.dump(resp.json(), f, indent=2)
+          else:
+              print('Intervals fetch failed:', resp.status_code, resp.text)
+          "
+
       - name: Commit changes
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add latest.json
-          git commit -m 'Update latest Intervals.icu data [skip ci]' || echo 'No changes to commit'
+          git add latest.json history.json intervals.json
+          git commit -m 'Update Intervals.icu data: latest + history + intervals [skip ci]' || echo 'No changes to commit'
           git push
