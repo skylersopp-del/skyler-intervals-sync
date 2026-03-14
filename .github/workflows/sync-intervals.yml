@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write  # Required for git push
+  contents: write
 
 jobs:
   sync:
@@ -22,19 +22,17 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Fetch and save latest data (existing logic)
+      - name: Fetch and save latest data
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           API_KEY: ${{ secrets.INTERVALS_API_KEY }}
         run: |
           python3 -c "
-          import requests
-          import json
-          import os
+          import requests, json, os
           from datetime import datetime, timedelta
           athlete_id = os.environ['ATHLETE_ID']
           api_key = os.environ['API_KEY']
-          auth = (api_key, '')  # Basic Auth: key as username, empty password
+          auth = (api_key, '')
           base_url = f'https://intervals.icu/api/v1/athlete/{athlete_id}'
           today = datetime.now().strftime('%Y-%m-%d')
           oldest_recent = (datetime.now() - timedelta(days=28)).strftime('%Y-%m-%d')
@@ -58,17 +56,16 @@ jobs:
           }
           with open('latest.json', 'w') as f:
               json.dump(data, f, indent=2)
+          print('Latest data saved')
           "
 
-      - name: Fetch wellness history for history.json (last 90 days trends)
+      - name: Fetch wellness history (last 90 days)
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           API_KEY: ${{ secrets.INTERVALS_API_KEY }}
         run: |
           python3 -c "
-          import requests
-          import json
-          import os
+          import requests, json, os
           from datetime import datetime, timedelta
           athlete_id = os.environ['ATHLETE_ID']
           api_key = os.environ['API_KEY']
@@ -81,19 +78,18 @@ jobs:
           if resp.ok:
               with open('history.json', 'w') as f:
                   json.dump(resp.json(), f, indent=2)
+              print('history.json saved')
           else:
-              print('Wellness history fetch failed:', resp.status_code, resp.text)
+              print(f'Wellness fetch failed: {resp.status_code} {resp.text}')
           "
 
-      - name: Fetch recent interval activities for intervals.json
+      - name: Fetch recent interval activities
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           API_KEY: ${{ secrets.INTERVALS_API_KEY }}
         run: |
           python3 -c "
-          import requests
-          import json
-          import os
+          import requests, json, os
           athlete_id = os.environ['ATHLETE_ID']
           api_key = os.environ['API_KEY']
           auth = (api_key, '')
@@ -103,14 +99,15 @@ jobs:
           if resp.ok:
               with open('intervals.json', 'w') as f:
                   json.dump(resp.json(), f, indent=2)
+              print('intervals.json saved')
           else:
-              print('Intervals fetch failed:', resp.status_code, resp.text)
+              print(f'Intervals fetch failed: {resp.status_code} {resp.text}')
           "
 
-      - name: Commit changes
+      - name: Commit changes if files updated
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add latest.json history.json intervals.json
+          git add latest.json history.json intervals.json || true
           git commit -m 'Update Intervals.icu data: latest + history + intervals [skip ci]' || echo 'No changes to commit'
-          git push
+          git push || echo 'Push skipped (no changes or error)'
