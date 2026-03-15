@@ -26,16 +26,20 @@ jobs:
         run: |
           curl -O https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
 
-      - name: Run official sync.py
+      - name: Run official sync.py with expanded fields
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           INTERVALS_KEY: ${{ secrets.INTERVALS_API_KEY }}
+
+          # ⭐ Override the default workouts endpoint
+          INTERVALS_BASE_URL: "https://intervals.icu/api/v1/athlete/${{ secrets.INTERVALS_ATHLETE_ID }}/workouts?key=${{ secrets.INTERVALS_API_KEY }}&fields=all"
+
         run: |
           python3 sync.py \
             --athlete-id "$ATHLETE_ID" \
             --intervals-key "$INTERVALS_KEY" \
             --output latest.json \
-            --generate-history  # Force history.json on this run (safe, pulls trends)
+            --generate-history
 
       - name: Commit changes if updated
         run: |
