@@ -1,0 +1,88 @@
+name: Run AI Coach
+
+on:
+  schedule:
+    # Daily coaching at 5am Pacific
+    - cron: "0 12 * * *"
+    # Weekly summary every Monday at 5am Pacific
+    - cron: "0 12 * * MON"
+    # Analysis + planning every Sunday at 5am Pacific
+    - cron: "0 12 * * SUN"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  coach:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      # ---------------------------------------------------------
+      # Load environment variables for LLM providers
+      # (You can add/remove providers as needed)
+      # ---------------------------------------------------------
+      - name: Export provider keys
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
+          echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" >> $GITHUB_ENV
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> $GITHUB_ENV
+          echo "AZURE_OPENAI_API_KEY=${{ secrets.AZURE_OPENAI_API_KEY }}" >> $GITHUB_ENV
+          echo "AZURE_OPENAI_ENDPOINT=${{ secrets.AZURE_OPENAI_ENDPOINT }}" >> $GITHUB_ENV
+
+      # ---------------------------------------------------------
+      # Run the appropriate coaching mode depending on the schedule
+      # ---------------------------------------------------------
+      - name: Determine coaching mode
+        id: mode
+        run: |
+          day=$(date +%u)
+
+          if [ "$day" -eq 1 ]; then
+            echo "mode=weekly" >> $GITHUB_OUTPUT
+          elif [ "$day" -eq 7 ]; then
+            echo "mode=analysis" >> $GITHUB_OUTPUT
+            echo "mode2=plan" >> $GITHUB_OUTPUT
+          else
+            echo "mode=daily" >> $GITHUB_OUTPUT
+          fi
+
+      # ---------------------------------------------------------
+      # Run the coach (multi-provider, model-agnostic)
+      # ---------------------------------------------------------
+      - name: Run primary coaching mode
+        run: |
+          python coach/engine/run_coach.py \
+            --kind "${{ steps.mode.outputs.mode }}" \
+            --provider "openai" \
+            --model "gpt-4.1-mini"
+
+      - name: Run secondary mode (if applicable)
+        if: ${{ steps.mode.outputs.mode2 != '' }}
+        run: |
+          python coach/engine/run_coach.py \
+            --kind "${{ steps.mode.outputs.mode2 }}" \
+            --provider "openai" \
+            --model "gpt-4.1-mini"
+
+      # ---------------------------------------------------------
+      # Commit outputs
+      # ---------------------------------------------------------
+      - name: Commit coaching outputs
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add coach/outputs/*.md || true
+          git commit -m "Update coaching outputs [skip ci]" || echo "No changes"
+          git push || echo "Push skipped"
