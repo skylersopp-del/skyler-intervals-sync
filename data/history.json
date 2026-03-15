@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-03-15T18:51:58.646852",
+  "generated_at": "2026-03-15T19:24:54.213487",
   "source": "Intervals.icu API",
   "sync_version": "3.85",
   "data_range": {
     "earliest": "2023-07-22",
-    "latest": "2026-03-14",
+    "latest": "2026-03-15",
     "total_months": 31
   },
   "ftp_timeline": [
@@ -173,13 +173,13 @@
       "avg_weekly_hours": 3.0,
       "ctl_start": 6.4,
       "ctl_end": 14.8,
-      "total_activities": 38,
-      "rest_days": 52,
+      "total_activities": 39,
+      "rest_days": 51,
       "hard_days": 13
     },
     "180d": {
       "avg_weekly_tss": 99.0,
-      "avg_weekly_hours": 3.1,
+      "avg_weekly_hours": 3.2,
       "ctl_start": 12.4,
       "ctl_end": 14.8,
       "weeks_tracked": 26
@@ -3993,7 +3993,7 @@
       "total_hours": 1.67,
       "total_tss": 15,
       "activity_count": 2,
-      "activity_types": "Walk, Unknown",
+      "activity_types": "Unknown, Walk",
       "ctl": 12.308106,
       "atl": 19.594986,
       "tsb": -7.3,
@@ -4122,10 +4122,10 @@
     },
     {
       "date": "2026-03-15",
-      "total_hours": 0.0,
+      "total_hours": 0.25,
       "total_tss": 0,
-      "activity_count": 0,
-      "activity_types": "Rest",
+      "activity_count": 1,
+      "activity_types": "Yoga",
       "ctl": 14.812039,
       "atl": 29.02216,
       "tsb": -14.2,
@@ -4861,9 +4861,9 @@
     },
     {
       "week_start": "2026-03-09",
-      "total_hours": 5.56,
+      "total_hours": 5.81,
       "total_tss": 222,
-      "activity_count": 6,
+      "activity_count": 7,
       "ctl_end": 14.8,
       "atl_end": 29.0,
       "tsb_end": -14.2,
@@ -5121,9 +5121,9 @@
     },
     {
       "month": "2026-03",
-      "total_hours": 7.58,
+      "total_hours": 7.83,
       "total_tss": 374,
-      "activity_count": 9,
+      "activity_count": 10,
       "ctl_peak": 15.2,
       "ctl_low": 9.6,
       "ctl_end": 14.8,
@@ -5598,9 +5598,9 @@
     },
     {
       "month": "2026-03",
-      "total_hours": 7.58,
+      "total_hours": 7.83,
       "total_tss": 374,
-      "activity_count": 9,
+      "activity_count": 10,
       "ctl_peak": 15.2,
       "ctl_low": 9.6,
       "ctl_end": 14.8,
@@ -6303,9 +6303,9 @@
     },
     {
       "month": "2026-03",
-      "total_hours": 7.58,
+      "total_hours": 7.83,
       "total_tss": 374,
-      "activity_count": 9,
+      "activity_count": 10,
       "ctl_peak": 15.2,
       "ctl_low": 9.6,
       "ctl_end": 14.8,
