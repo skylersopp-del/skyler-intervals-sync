@@ -22,9 +22,34 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Download official Section 11 sync.py
+#      - name: Download official Section 11 sync.py
+#        run: |
+#          curl -O https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
+
+      - name: Download latest Section 11 assets
         run: |
-          curl -O https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
+          mkdir -p CrankAddict_Section-11
+
+          # 1) Always pull the latest sync.py
+          curl -o section11/sync.py \
+            https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
+
+          # 2) Protocol spec
+          curl -o section11/SECTION_11.md \
+            https://raw.githubusercontent.com/CrankAddict/section-11/main/SECTION_11.md
+
+          # 3) Setup assistant
+          curl -o section11/SETUP_ASSISTANT.md \
+            https://raw.githubusercontent.com/CrankAddict/section-11/main/SETUP_ASSISTANT.md
+
+          # 4) Manifest (version + capabilities)
+          curl -o section11/manifest.json \
+            https://raw.githubusercontent.com/CrankAddict/section-11/main/manifest.json
+
+          # 5) Dossier template (for comparison only)
+          curl -o section11/DOSSIER_TEMPLATE.md \
+            https://raw.githubusercontent.com/CrankAddict/section-11/main/DOSSIER_TEMPLATE.md
+
 
       - name: Run official sync.py with expanded fields
         env:
@@ -35,7 +60,7 @@ jobs:
           INTERVALS_BASE_URL: "https://intervals.icu/api/v1/athlete/${{ secrets.INTERVALS_ATHLETE_ID }}/workouts?key=${{ secrets.INTERVALS_API_KEY }}&fields=all"
 
         run: |
-          python3 sync.py \
+          python3 CrankAddict_Section-11/sync.py \
             --athlete-id "$ATHLETE_ID" \
             --intervals-key "$INTERVALS_KEY" \
             --output latest.json \
