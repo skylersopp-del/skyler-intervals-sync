@@ -68,23 +68,160 @@ This document serves as a reference template for endurance athletes using the de
 |Secondary goal: Improve Gut Health|May 2026|
 |Tertiary goal: Shredded for July Beach Vacation|July 2026|
 
-**Current Phase:** Aerobic Build 
+**Current Phase:** Build 
 
-**Training Styles:**
+## Coaching Inspiration & Source Hierarchy
 
-  **Strength Training:** Mind Pump Media (Primary), Nsima Inyang (Secondary)
+This coaching system must base all training recommendations—strength, endurance, mobility, recovery, health & wellness, and multisport—on the PRIMARY approved coaching frameworks listed below. These primary sources define the philosophy, technique, programming style, and movement principles that guide all decisions.
 
-  **Recovery:** Mind Pump Media (Primary)
+The Section‑11 framework serves as the SECONDARY layer. It provides the metrics, calculations, readiness indicators, load analysis, and performance tracking used to evaluate progress and determine how well the athlete is aligning with the primary coaching frameworks.
 
-  **General Health:** Mind Pump Media (Primary)
+In other words:
+- PRIMARY = the “why” and “how” of training (philosophy + method)
+- SECONDARY = the “what” and “how much” (metrics + data interpretation)
 
-  **Running:** Shane Benzie (Primary), Runna (Secondary) and Floris Gierman (Tertiary)
+All coaching outputs must follow this hierarchy.
 
-  **Cycling:** TrainerRoad (Primary) and Inigo San Millan (Secondary).
+The hierarchy below defines:
+- PRIMARY sources → default, highest authority  
+- SECONDARY sources → used when primary does not apply  
+- TERTIARY sources → used for nuance, refinement, or alternative perspectives  
 
-  **Mobility:** Nsima Inyang (Primary), Mind Pump Media (Secondary)
+All coaching outputs must follow this hierarchy.
 
-  **Multi-Sport Training:** Phil Mosley (Primary) and TrainingPeaks (Secondary)
+---
+
+### 🏋️ Strength Training
+**Primary:** Mind Pump Media  
+- Strength Training philosophy 
+- Health and Wellness
+- Aesthetic Building   
+- Mobility-first approach  
+- Phase-based periodization  
+- Progressive overload  
+- Joint health, longevity, and movement quality  
+
+**Secondary:** Nsima Inyang  
+- Functional strength  
+- Mobility + stability integration  
+- Technique refinement  
+
+---
+
+### 🔄 Recovery & Wellness
+**Primary:** Mind Pump Media  
+- Stress management  
+- Recovery prioritization  
+- Sleep, mobility, and CNS awareness  
+- Avoiding overreaching  
+
+**Secondary:** Lauryn and Michael Bosstick  
+- Natural Health  
+- Healthy Lifestyle Habits 
+
+---
+
+### 🧬 General Health & Longevity
+**Primary:** Mind Pump Media  
+- Metabolic health  
+- Hormonal balance  
+- Sustainable training  
+- Lifestyle integration  
+
+**Secondary:** Lauryn and Michael Bosstick  
+- Natural Health  
+- Healthy Lifestyle Habits 
+
+---
+
+### 🏃 Running Technique & Endurance Development
+**Primary:** Shane Benzie  
+- Elastic recoil  
+- Posture, rhythm, and fascia-driven movement  
+- Natural running mechanics  
+
+**Secondary 1:** Joe Friel  
+- Programming Training
+- Running Technique  
+- Beginner-to-advanced progression
+
+**Secondary 2:** Runna  
+- Practical programming structure  
+- Pacing guidance  
+- Beginner-to-advanced progression  
+
+**Tertiary:** Floris Gierman  
+- MAF-based aerobic development  
+- Low HR training  
+- Long-term consistency  
+
+---
+
+### 🚴 Cycling Performance
+**Primary:** TrainerRoad  
+- Structured interval training  
+- Power-based progression  
+- Sweet spot, threshold, VO2 max frameworks  
+
+**Secondary:** Inigo San Millan  
+- Zone 2 metabolic development  
+- Lactate clearance  
+- Mitochondrial efficiency  
+
+**Tertiary:** Joe Friel  
+- Programming Training
+---
+
+### 🤸 Mobility & Movement Quality
+**Primary:** Nsima Inyang  
+- Joint articulation  
+- Functional range  
+- Strength-through-range  
+
+**Secondary:** Mind Pump Media  
+- MAPS Prime / Prime Pro  
+- Corrective movement patterns  
+
+---
+
+### 🏊‍♂️🏃‍♂️🚴 Multi‑Sport Training (Triathlon / Duathlon / Hybrid)
+**Primary:** Phil Mosley  
+- Balanced multisport periodization  
+- Sustainable volume distribution  
+- Practical race preparation  
+
+**Secondary:** Joe Friel  
+- Multi-Sport Programming Training
+- Progressive overload
+- Technique
+- Strength Training for Endurance Athlete
+
+**Tertiary:** TrainingPeaks  
+- Data-driven planning  
+- TSS/CTL/ATL load management  
+- Structured endurance frameworks  
+
+
+---
+
+### 📌 Integration Rules
+1. **Primary sources always override secondary and tertiary sources.**  
+2. When sources conflict, choose the highest‑priority source.  
+3. All strength training must be MAPS‑based unless explicitly stated otherwise.  
+4. All running technique guidance must follow Shane Benzie’s principles first, followed by the others in order of priority.  
+5. All cycling intensity distribution must follow TrainerRoad unless overridden by metabolic considerations from San Millan.  
+6. All mobility work must follow Nsima Inyang’s principles unless MAPS Prime is more appropriate.  
+7. All multisport planning must follow Phil Mosley’s structure unless Joe Friel data suggests a necessary adjustment.  
+8. All recommendations must align with long‑term health, recovery, and sustainability.
+9. Health and Wellness come first, and hormone optimization and fertility are critically important  
+
+---
+
+### 🧠 How LLMs Should Use This Section
+- Treat this hierarchy as the **source of truth** for all coaching decisions.  
+- When generating plans, analysis, or recommendations, cite which source you are drawing from.  
+- Never use generic fitness advice when a primary/secondary/tertiary source applies.  
+- Always integrate endurance, strength, mobility, and recovery in a way that respects these frameworks.  
 
 ---
 
