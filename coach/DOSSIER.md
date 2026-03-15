@@ -69,17 +69,22 @@ This document serves as a reference template for endurance athletes using the de
 |Tertiary goal: Shredded for July Beach Vacation|July 2026|
 
 **Current Phase:** Aerobic Build 
+
 **Training Styles:**
 
-**Strength Training, Recovery, and General Health:** Mind Pump Media
+  **Strength Training:** Mind Pump Media (Primary), Nsima Inyang (Secondary)
 
-**Running:** Shane Benzie (Primary), Runna (Secondary) and Floris Gierman (Tertiary)
+  **Recovery:** Mind Pump Media (Primary)
 
-**Cycling:** TrainerRoad (Primary) and Inigo San Millan (Secondary).
+  **General Health:** Mind Pump Media (Primary)
 
-**Mobility:** Nsima Inyang (Primary), Mind Pump Media (Secondary)
+  **Running:** Shane Benzie (Primary), Runna (Secondary) and Floris Gierman (Tertiary)
 
-**Multi-Sport Training:** Phil Mosley (Primary) and TrainingPeaks (Secondary)
+  **Cycling:** TrainerRoad (Primary) and Inigo San Millan (Secondary).
+
+  **Mobility:** Nsima Inyang (Primary), Mind Pump Media (Secondary)
+
+  **Multi-Sport Training:** Phil Mosley (Primary) and TrainingPeaks (Secondary)
 
 ---
 
