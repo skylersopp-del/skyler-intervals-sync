@@ -78,11 +78,14 @@ jobs:
             --generate-history
 
       # ---------------------------------------------------------
-      # STEP 4: Debug — show generated JSON files in root
+      # STEP 4: Post-process notes and enrich JSON
       # ---------------------------------------------------------
-      - name: Debug — show generated JSON files in root
+      - name: Post-process notes and enrich JSON
         run: |
-          echo "Root directory contents after sync.py:"
+          echo "Running enrichment script..."
+          python3 scripts/enrich_notes.py
+
+          echo "After enrichment:"
           ls -l .
 
       # ---------------------------------------------------------
@@ -108,5 +111,5 @@ jobs:
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           git add data/latest.json data/history.json data/intervals.json || true
-          git commit -m 'Update Intervals.icu data via official sync.py [skip ci]' || echo 'No changes to commit'
+          git commit -m 'Update Intervals.icu data via official sync.py + enrichment [skip ci]' || echo 'No changes to commit'
           git push || echo 'Push skipped'
