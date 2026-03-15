@@ -78,7 +78,30 @@ jobs:
             --generate-history
 
       # ---------------------------------------------------------
-      # STEP 4: Commit updated data files (NOT Section 11 files)
+      # STEP 4: Debug — show generated JSON files in root
+      # ---------------------------------------------------------
+      - name: Debug — show generated JSON files in root
+        run: |
+          echo "Root directory contents after sync.py:"
+          ls -l .
+
+      # ---------------------------------------------------------
+      # STEP 5: Move generated files into /data
+      # ---------------------------------------------------------
+      - name: Move generated files into /data
+        run: |
+          echo "Moving generated files into /data..."
+          mkdir -p data
+
+          if [ -f latest.json ]; then mv latest.json data/latest.json; fi
+          if [ -f history.json ]; then mv history.json data/history.json; fi
+          if [ -f intervals.json ]; then mv intervals.json data/intervals.json; fi
+
+          echo "Contents of /data after moving:"
+          ls -l data
+
+      # ---------------------------------------------------------
+      # STEP 6: Commit updated data files (NOT Section 11 files)
       # ---------------------------------------------------------
       - name: Commit changes if updated
         run: |
