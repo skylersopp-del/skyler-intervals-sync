@@ -2,7 +2,7 @@ name: Sync Intervals.icu Data
 
 on:
   schedule:
-    - cron: '0 */4 * * *'  # Every 4 hours
+    - cron: '0 */4 * * *'
   workflow_dispatch:
 
 permissions:
@@ -11,6 +11,7 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -23,54 +24,40 @@ jobs:
         run: pip install requests
 
       # ---------------------------------------------------------
-      # STEP 1: Download latest Section 11 files (live pull)
+      # STEP 1: Download latest Section 11 assets
       # ---------------------------------------------------------
       - name: Download latest Section 11 assets
         run: |
-          echo "Creating folder..."
           mkdir -p CrankAddict_Section-11
 
-          echo "Downloading sync.py..."
           curl -s -S -o CrankAddict_Section-11/sync.py \
             https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
 
-          echo "Downloading SECTION_11.md..."
           curl -s -S -o CrankAddict_Section-11/SECTION_11.md \
             https://raw.githubusercontent.com/CrankAddict/section-11/main/SECTION_11.md
 
-          echo "Downloading SETUP_ASSISTANT.md..."
           curl -s -S -o CrankAddict_Section-11/SETUP_ASSISTANT.md \
             https://raw.githubusercontent.com/CrankAddict/section-11/main/SETUP_ASSISTANT.md
 
-          echo "Downloading manifest.json..."
           curl -s -S -o CrankAddict_Section-11/manifest.json \
             https://raw.githubusercontent.com/CrankAddict/section-11/main/manifest.json
 
-          echo "Downloading DOSSIER_TEMPLATE.md..."
           curl -s -S -o CrankAddict_Section-11/DOSSIER_TEMPLATE.md \
             https://raw.githubusercontent.com/CrankAddict/section-11/main/DOSSIER_TEMPLATE.md
 
-      # ---------------------------------------------------------
-      # STEP 2: Debug — show the downloaded files
-      # ---------------------------------------------------------
       - name: List Section 11 files
         run: |
-          echo "Listing contents of CrankAddict_Section-11:"
-          ls -l CrankAddict_Section-11 || echo "Folder missing"
+          ls -l CrankAddict_Section-11
 
       # ---------------------------------------------------------
-      # STEP 3: Run sync.py using the live-pulled version
+      # STEP 2: Run sync.py
       # ---------------------------------------------------------
-      - name: Run official sync.py with expanded fields
+      - name: Run official sync.py
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           INTERVALS_KEY: ${{ secrets.INTERVALS_API_KEY }}
-
-          # Override the default workouts endpoint
           INTERVALS_BASE_URL: "https://intervals.icu/api/v1/athlete/${{ secrets.INTERVALS_ATHLETE_ID }}/workouts?key=${{ secrets.INTERVALS_API_KEY }}&fields=all"
-
         run: |
-          echo "Running sync.py..."
           python3 CrankAddict_Section-11/sync.py \
             --athlete-id "$ATHLETE_ID" \
             --intervals-key "$INTERVALS_KEY" \
@@ -78,38 +65,38 @@ jobs:
             --generate-history
 
       # ---------------------------------------------------------
-      # STEP 4: Post-process notes and enrich JSON
+      # STEP 3: Enrich JSON
       # ---------------------------------------------------------
       - name: Post-process notes and enrich JSON
         run: |
-          echo "Running enrichment script..."
           python3 scripts/enrich_notes.py
 
-          echo "After enrichment:"
-          ls -l .
-
       # ---------------------------------------------------------
-      # STEP 5: Move generated files into /data
+      # STEP 4: Build notes.json index (THIS IS THE NEW STEP)
       # ---------------------------------------------------------
-      - name: Move generated files into /data
+      - name: Build notes.json index
         run: |
-          echo "Moving generated files into /data..."
-          mkdir -p data
-
-          if [ -f latest.json ]; then mv latest.json data/latest.json; fi
-          if [ -f history.json ]; then mv history.json data/history.json; fi
-          if [ -f intervals.json ]; then mv intervals.json data/intervals.json; fi
-
-          echo "Contents of /data after moving:"
+          python3 scripts/build_notes_index.py
           ls -l data
 
       # ---------------------------------------------------------
-      # STEP 6: Commit updated data files (NOT Section 11 files)
+      # STEP 5: Move files into /data
       # ---------------------------------------------------------
-      - name: Commit changes if updated
+      - name: Move generated files into /data
+        run: |
+          mkdir -p data
+          mv latest.json data/latest.json
+          mv history.json data/history.json
+          mv intervals.json data/intervals.json
+          mv data/notes.json data/notes.json || true
+
+      # ---------------------------------------------------------
+      # STEP 6: Commit changes
+      # ---------------------------------------------------------
+      - name: Commit changes
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add data/latest.json data/history.json data/intervals.json || true
-          git commit -m 'Update Intervals.icu data via official sync.py + enrichment [skip ci]' || echo 'No changes to commit'
+          git add data/*.json || true
+          git commit -m 'Update Intervals.icu data + notes index [skip ci]' || echo 'No changes'
           git push || echo 'Push skipped'
