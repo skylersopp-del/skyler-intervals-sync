@@ -1,51 +1,39 @@
-# 🏁 Skyler’s Coaching Dashboard
+# 🏁 Performance Dashboard
 
-This dashboard provides a quick, high‑signal overview of your current training state, automatically updated by your Section‑11 coaching engine.
+This dashboard summarizes your current training state using the latest synced data and coaching outputs.
 
 ---
 
 ## 📅 Latest Coaching Outputs
-
-### **Daily Coaching**
-See: `coach/outputs/daily.md`
-
-### **Weekly Summary**
-See: `coach/outputs/weekly.md`
-
-### **Readiness & Performance Analysis**
-See: `coach/outputs/analysis.md`
-
-### **Training Plan**
-See: `coach/outputs/plan.md`
+- **Daily:** `coach/outputs/daily.md`
+- **Weekly:** `coach/outputs/weekly.md`
+- **Analysis:** `coach/outputs/analysis.md`
+- **Plan:** `coach/outputs/plan.md`
 
 ---
 
 ## 📊 Training Data Snapshots
-
-### **Latest Workout**
-Source: `data/latest.json`
-
-### **Full History**
-Source: `data/history.json`
-
-### **Athlete Profile**
-Source: `data/intervals.json`
-
-### **Notes Index**
-Source: `data/notes.json`
+- **Latest Workout:** `data/latest.json`
+- **Full History:** `data/history.json`
+- **Notes Index:** `data/notes.json`
+- **Athlete Profile:** `data/intervals.json`
 
 ---
 
 ## 🧠 Athlete Dossier
 See: `coach/DOSSIER.md`
 
-This file contains your long‑term goals, constraints, preferences, and background — the foundation of all coaching outputs.
-
 ---
 
-## 🔧 System Status
+## 🔍 Quick Indicators
+(LLMs can fill this in automatically)
 
 - **Data Sync:** Every 4 hours  
+- **7‑day load trend:**  
+- **14‑day fatigue trend:**  
+- **HRV/RHR pattern:**  
+- **Consistency score:**  
+- **Block phase:**  
 - **Daily Coaching:** Every morning  
 - **Weekly Summary:** Mondays  
 - **Analysis + Plan:** Sundays  
@@ -55,13 +43,10 @@ This file contains your long‑term goals, constraints, preferences, and backgro
 ---
 
 ## 🧩 How to Use This Dashboard
-
-You can ask any LLM:
-
-- “Interpret my daily coaching.”
-- “Summarize my weekly trends.”
+Ask any LLM:
+- “Interpret my weekly summary.”
+- “Analyze my fatigue trends.”
 - “Help me adjust my training plan.”
-- “Analyze my readiness based on the latest data.”
 - “Compare this week to last week.”
 
 This dashboard is your entry point.
