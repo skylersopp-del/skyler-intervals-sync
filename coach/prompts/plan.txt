@@ -59,8 +59,9 @@ TASK:
 3. Create a week‑by‑week block structure.
 4. Provide a detailed 7–14 day tactical plan.
 5. Integrate health, wellness, recovery, and life stress.
-6. Provide rationale for the plan.
-7. Suggest adjustments based on readiness and constraints.
+6. Boost natural testosterone levels.
+7. Provide rationale for the plan.
+8. Suggest adjustments based on readiness and constraints.
 
 OUTPUT FORMAT (Markdown):
 
