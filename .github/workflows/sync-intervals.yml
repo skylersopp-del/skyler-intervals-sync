@@ -2,7 +2,7 @@ name: Sync Intervals.icu Data
 
 on:
   schedule:
-    - cron: '0 */4 * * *'  # Every 4 hours
+    - cron: '0 */4 * * *'
   workflow_dispatch:
 
 permissions:
@@ -32,7 +32,7 @@ jobs:
           from datetime import datetime, timedelta
           athlete_id = os.environ['ATHLETE_ID']
           api_key = os.environ['API_KEY']
-          auth = (api_key, '')
+          auth = ('API_KEY', api_key)  # FIXED: literal 'API_KEY' username, key as password
           base_url = f'https://intervals.icu/api/v1/athlete/{athlete_id}'
           today = datetime.now().strftime('%Y-%m-%d')
           oldest_recent = (datetime.now() - timedelta(days=28)).strftime('%Y-%m-%d')
@@ -69,45 +69,48 @@ jobs:
           from datetime import datetime, timedelta
           athlete_id = os.environ['ATHLETE_ID']
           api_key = os.environ['API_KEY']
-          auth = (api_key, '')
+          auth = ('API_KEY', api_key)  # FIXED
           base_url = f'https://intervals.icu/api/v1/athlete/{athlete_id}'
           today = datetime.now().strftime('%Y-%m-%d')
           oldest = (datetime.now() - timedelta(days=90)).strftime('%Y-%m-%d')
           url = f'{base_url}/wellness?oldest={oldest}&newest={today}'
           resp = requests.get(url, auth=auth)
           if resp.ok:
+              print(f'Success: {len(resp.json())} wellness entries fetched')
               with open('history.json', 'w') as f:
                   json.dump(resp.json(), f, indent=2)
-              print('history.json saved')
           else:
-              print(f'Wellness fetch failed: {resp.status_code} {resp.text}')
+              print(f'Wellness fetch failed: {resp.status_code} {resp.text[:200]}')
           "
 
-      - name: Fetch recent interval activities
+      - name: Fetch recent interval activities (last 90 days, has_intervals=true)
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           API_KEY: ${{ secrets.INTERVALS_API_KEY }}
         run: |
           python3 -c "
           import requests, json, os
+          from datetime import datetime, timedelta
           athlete_id = os.environ['ATHLETE_ID']
           api_key = os.environ['API_KEY']
-          auth = (api_key, '')
+          auth = ('API_KEY', api_key)  # FIXED
           base_url = f'https://intervals.icu/api/v1/athlete/{athlete_id}'
-          url = f'{base_url}/activities?has_intervals=true&limit=50'
+          today = datetime.now().strftime('%Y-%m-%d')
+          oldest = (datetime.now() - timedelta(days=90)).strftime('%Y-%m-%d')
+          url = f'{base_url}/activities?oldest={oldest}&newest={today}&has_intervals=true&limit=50'
           resp = requests.get(url, auth=auth)
           if resp.ok:
+              print(f'Success: {len(resp.json())} interval activities fetched')
               with open('intervals.json', 'w') as f:
                   json.dump(resp.json(), f, indent=2)
-              print('intervals.json saved')
           else:
-              print(f'Intervals fetch failed: {resp.status_code} {resp.text}')
+              print(f'Intervals fetch failed: {resp.status_code} {resp.text[:200]}')
           "
 
       - name: Commit changes if files updated
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add latest.json history.json intervals.json || true
+          git add *.json || true
           git commit -m 'Update Intervals.icu data: latest + history + intervals [skip ci]' || echo 'No changes to commit'
-          git push || echo 'Push skipped (no changes or error)'
+          git push || echo 'Push skipped'
