@@ -26,13 +26,16 @@ jobs:
         run: |
           curl -O https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
 
-      - name: Run official sync.py with secrets
+      - name: Run official sync.py
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           INTERVALS_KEY: ${{ secrets.INTERVALS_API_KEY }}
-          # Optional: WEEK_START=mon (or tue/wed/etc.) if not Monday start
-          # ZONE_PREFERENCE=run:hr,cycling:power (if you want HR for run analysis)
-        run: python3 sync.py --output latest.json --history history.json --intervals intervals.json
+        run: |
+          python3 sync.py \
+            --athlete-id "$ATHLETE_ID" \
+            --intervals-key "$INTERVALS_KEY" \
+            --output latest.json \
+            --generate-history  # Force history.json on this run (safe, pulls trends)
 
       - name: Commit changes if updated
         run: |
