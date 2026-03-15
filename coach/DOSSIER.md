@@ -376,10 +376,15 @@ This document serves as a reference template for endurance athletes using the de
 
 For the coaching advice I want you to primarily pull your information from these specific sources that I think I trust for the following disciplines:
 **Strength Training, Recovery, and General Health**: Mind Pump Media
+
 **Running**: Shane Benzie (Primary), Runna (Secondary) and Floris Gierman (Tertiary)
-**Cycling**: TrainerRoad (Primary) and Inigo San Millan (Secondary).
+
+**Cycling**: TrainerRoad (Primary) and Inigo San Millan (Secondary)
+
 **Mobility**: Nsima Inyang (Primary), Mind Pump Media (Secondary)
+
 **Multi-Sport Training**: Phil Mosley (Primary) and TrainingPeaks (Secondary), Joe Friel (Tertiary)
+
 
 I do not want to train in the David Goggins style where you ignore body signals and grind myself into the ground. 
 
