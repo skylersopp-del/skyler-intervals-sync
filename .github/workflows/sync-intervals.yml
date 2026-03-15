@@ -31,23 +31,23 @@ jobs:
           mkdir -p CrankAddict_Section-11
 
           # 1) Always pull the latest sync.py
-          curl -o section11/sync.py \
+          curl -o CrankAddict_Section-11/sync.py \
             https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
 
           # 2) Protocol spec
-          curl -o section11/SECTION_11.md \
+          curl -o CrankAddict_Section-11/SECTION_11.md \
             https://raw.githubusercontent.com/CrankAddict/section-11/main/SECTION_11.md
 
           # 3) Setup assistant
-          curl -o section11/SETUP_ASSISTANT.md \
+          curl -o CrankAddict_Section-11/SETUP_ASSISTANT.md \
             https://raw.githubusercontent.com/CrankAddict/section-11/main/SETUP_ASSISTANT.md
 
           # 4) Manifest (version + capabilities)
-          curl -o section11/manifest.json \
+          curl -o CrankAddict_Section-11/manifest.json \
             https://raw.githubusercontent.com/CrankAddict/section-11/main/manifest.json
 
           # 5) Dossier template (for comparison only)
-          curl -o section11/DOSSIER_TEMPLATE.md \
+          curl -o CrankAddict_Section-11/DOSSIER_TEMPLATE.md \
             https://raw.githubusercontent.com/CrankAddict/section-11/main/DOSSIER_TEMPLATE.md
 
 
