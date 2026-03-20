@@ -29,34 +29,16 @@ jobs:
       - name: Download latest Section 11 assets
         run: |
           mkdir -p CrankAddict_Section-11
-
-          curl -s -S -o CrankAddict_Section-11/sync.py \
-            https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
-
-          curl -s -S -o CrankAddict_Section-11/SECTION_11.md \
-            https://raw.githubusercontent.com/CrankAddict/section-11/main/SECTION_11.md
-
-          curl -s -S -o CrankAddict_Section-11/SETUP_ASSISTANT.md \
-            https://raw.githubusercontent.com/CrankAddict/section-11/main/SETUP_ASSISTANT.md
-
-          curl -s -S -o CrankAddict_Section-11/manifest.json \
-            https://raw.githubusercontent.com/CrankAddict/section-11/main/manifest.json
-
-          curl -s -S -o CrankAddict_Section-11/DOSSIER_TEMPLATE.md \
-            https://raw.githubusercontent.com/CrankAddict/section-11/main/DOSSIER_TEMPLATE.md
-
-      - name: List Section 11 files
-        run: |
-          ls -l CrankAddict_Section-11
+          curl -s -S -o CrankAddict_Section-11/sync.py https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
+          curl -s -S -o CrankAddict_Section-11/SECTION_11.md https://raw.githubusercontent.com/CrankAddict/section-11/main/SECTION_11.md
 
       # ---------------------------------------------------------
-      # STEP 2: Run sync.py
+      # STEP 2: Run official sync.py (now confirmed working)
       # ---------------------------------------------------------
       - name: Run official sync.py
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           INTERVALS_KEY: ${{ secrets.INTERVALS_API_KEY }}
-          INTERVALS_BASE_URL: "https://intervals.icu/api/v1/athlete/${{ secrets.INTERVALS_ATHLETE_ID }}/workouts?key=${{ secrets.INTERVALS_API_KEY }}&fields=all"
         run: |
           python3 CrankAddict_Section-11/sync.py \
             --athlete-id "$ATHLETE_ID" \
@@ -65,27 +47,33 @@ jobs:
             --generate-history
 
       # ---------------------------------------------------------
-      # STEP 3: Enrich JSON
+      # STEP 3: Move fresh files into data/ (NEW - fixes staleness)
       # ---------------------------------------------------------
-      - name: Post-process notes and enrich JSON
+      - name: Move generated files into /data
         run: |
-          python3 scripts/enrich_notes.py
+          mkdir -p data
+          mv latest.json data/latest.json || true
+          mv history.json data/history.json || true
+          ls -l data/  # debug confirmation
 
       # ---------------------------------------------------------
-      # STEP 4: Build notes.json index
+      # STEP 4: Post-process (enrich + notes index)
       # ---------------------------------------------------------
+      - name: Post-process notes and enrich JSON
+        run: python3 scripts/enrich_notes.py
+
       - name: Build notes.json index
         run: |
           python3 scripts/build_notes_index.py
-          ls -l data  # Debug: confirm files are in data/
+          ls -l data/
 
       # ---------------------------------------------------------
-      # STEP 5: Commit changes (no mv needed anymore)
+      # STEP 5: Commit
       # ---------------------------------------------------------
       - name: Commit changes
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           git add data/*.json || true
-          git commit -m 'Update Intervals.icu data + notes index [skip ci]' || echo 'No changes to commit'
+          git commit -m 'Update Intervals.icu data + notes index [skip ci]' || echo 'No changes'
           git push || echo 'Push skipped'
