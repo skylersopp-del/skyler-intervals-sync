@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      ATHLETE_ID: "155257"
+      ATHLETE_ID: "i155257"
       INTERVALS_KEY: "2e0rjtpzf4mxzzrtaz1vm96wb"
 
     steps:
