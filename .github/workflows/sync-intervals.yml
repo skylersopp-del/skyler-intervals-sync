@@ -12,6 +12,10 @@ jobs:
   sync:
     runs-on: ubuntu-latest
 
+    env:
+      ATHLETE_ID: "155257"
+      INTERVALS_KEY: "2e0rjtpzf4mxzzrtaz1vm96wb"
+
     steps:
       - uses: actions/checkout@v4
 
@@ -33,9 +37,6 @@ jobs:
       # 1. RUN SYNC WITH RETRIES
       # -----------------------------
       - name: Run sync.py with retries
-        env:
-          ATHLETE_ID: i155257
-          INTERVALS_KEY: 6pmirqiemk2ca5vr60ldosi85
         run: |
           for i in 1 2 3; do
             echo "Attempt $i..."
@@ -66,13 +67,10 @@ jobs:
       # ⭐ 3. PULL FULL WORKOUTS (fields=all)
       # -----------------------------
       - name: Pull full workouts (fields=all)
-        env:
-          ATHLETE_ID: i155257
-          INTERVALS_KEY: 6pmirqiemk2ca5vr60ldosi85
         run: |
           mkdir -p data
           curl -s -S \
-            "https://intervals.icu/api/v1/athlete/i155257/workouts?days=30&fields=all&key=6pmirqiemk2ca5vr60ldosi85" \
+            "https://intervals.icu/api/v1/athlete/${ATHLETE_ID}/workouts?days=30&fields=all&apikey=${INTERVALS_KEY}" \
             -o data/full_workouts.json
 
           echo "Downloaded full_workouts.json:"
