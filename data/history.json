@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-20T19:18:42.783084",
+  "generated_at": "2026-03-20T19:23:14.450885",
   "source": "Intervals.icu API",
   "sync_version": "3.86",
   "data_range": {
@@ -3817,7 +3817,7 @@
       "total_hours": 1.81,
       "total_tss": 46,
       "activity_count": 2,
-      "activity_types": "VirtualRun, Run",
+      "activity_types": "Run, VirtualRun",
       "ctl": 14.594542,
       "atl": 26.783043,
       "tsb": -12.2,
