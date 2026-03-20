@@ -72,31 +72,20 @@ jobs:
           python3 scripts/enrich_notes.py
 
       # ---------------------------------------------------------
-      # STEP 4: Build notes.json index (THIS IS THE NEW STEP)
+      # STEP 4: Build notes.json index
       # ---------------------------------------------------------
       - name: Build notes.json index
         run: |
           python3 scripts/build_notes_index.py
-          ls -l data
+          ls -l data  # Debug: confirm files are in data/
 
       # ---------------------------------------------------------
-      # STEP 5: Move files into /data
-      # ---------------------------------------------------------
-      - name: Move generated files into /data
-        run: |
-          mkdir -p data
-          mv latest.json data/latest.json
-          mv history.json data/history.json
-          mv intervals.json data/intervals.json
-          mv data/notes.json data/notes.json || true
-
-      # ---------------------------------------------------------
-      # STEP 6: Commit changes
+      # STEP 5: Commit changes (no mv needed anymore)
       # ---------------------------------------------------------
       - name: Commit changes
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           git add data/*.json || true
-          git commit -m 'Update Intervals.icu data + notes index [skip ci]' || echo 'No changes'
+          git commit -m 'Update Intervals.icu data + notes index [skip ci]' || echo 'No changes to commit'
           git push || echo 'Push skipped'
