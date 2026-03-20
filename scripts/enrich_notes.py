@@ -5,27 +5,60 @@ from pathlib import Path
 DATA_DIR = Path("data")
 HISTORY_PATH = DATA_DIR / "history.json"
 INTERVALS_PATH = DATA_DIR / "intervals.json"
+LATEST_PATH = DATA_DIR / "latest.json"
 CSV_PATH = DATA_DIR / "activities.csv"
+FULL_WORKOUTS_PATH = DATA_DIR / "full_workouts.json"
 
 
 def main():
-    print("Enrich start")
+    print("=== Enrich Start ===")
 
     # ----------------------------------------
-    # Load existing intervals.json (Fix 2)
+    # Load full workouts (the biggest data dump)
+    # ----------------------------------------
+    full_workouts = []
+    if FULL_WORKOUTS_PATH.exists():
+        try:
+            full_workouts = json.loads(FULL_WORKOUTS_PATH.read_text())
+            print(f"Loaded {len(full_workouts)} full workouts from full_workouts.json")
+        except Exception as e:
+            print(f"Failed to load full_workouts.json: {e}")
+    else:
+        print("full_workouts.json not found — cannot build intervals.json or latest.json")
+
+    # ----------------------------------------
+    # Build intervals.json from full workouts
     # ----------------------------------------
     intervals = []
-    if INTERVALS_PATH.exists():
-        try:
-            intervals = json.loads(INTERVALS_PATH.read_text())
-            print(f"Loaded {len(intervals)} intervals from sync.py")
-        except Exception as e:
-            print(f"Failed to load intervals.json: {e}")
-    else:
-        print("intervals.json not found — starting with empty list")
+    for w in full_workouts:
+        entry = {
+            "id": w.get("id"),
+            "date": w.get("start_date_local") or w.get("start_date"),
+            "name": w.get("name"),
+            "type": w.get("type"),
+            "duration": w.get("duration"),
+            "distance": w.get("distance"),
+            "avg_hr": w.get("avg_hr"),
+            "max_hr": w.get("max_hr"),
+            "power": w.get("power"),
+            "cadence": w.get("cadence"),
+            "pace": w.get("pace"),
+            "tss": w.get("tss"),
+            "ftp": w.get("ftp"),
+            "notes": w.get("notes"),
+            "laps": w.get("laps"),
+            "splits": w.get("splits"),
+            "intervals": w.get("intervals"),
+            "equipment": w.get("equipment"),
+            "tags": w.get("tags"),
+            "route": w.get("route"),
+        }
+        intervals.append(entry)
+
+    print(f"Built intervals.json with {len(intervals)} workouts from full data")
 
     # ----------------------------------------
-    # Merge CSV data into existing intervals (Fix 3)
+    # Merge CSV data into intervals
     # ----------------------------------------
     intervals_by_date = {entry.get("date"): entry for entry in intervals}
 
@@ -40,7 +73,6 @@ def main():
                 if pd.isna(date):
                     continue
 
-                # If this workout already exists from Intervals.icu → enrich it
                 if date in intervals_by_date:
                     entry = intervals_by_date[date]
                     entry.update({
@@ -53,7 +85,6 @@ def main():
                         "csv_weight": row.get("Weight"),
                     })
                 else:
-                    # Optional: include CSV-only workouts
                     new_entry = {
                         "date": date,
                         "name": row.get("Name"),
@@ -75,7 +106,7 @@ def main():
         print("activities.csv not found")
 
     # ----------------------------------------
-    # Merge history if available (unchanged logic)
+    # Merge history (CTL/ATL/TSB)
     # ----------------------------------------
     if HISTORY_PATH.exists():
         try:
@@ -94,10 +125,17 @@ def main():
             print(f"History merge failed: {e}")
 
     # ----------------------------------------
-    # FIX 4: Prevent overwriting with empty data
+    # Build latest.json from the most recent 5 workouts
+    # ----------------------------------------
+    latest = sorted(full_workouts, key=lambda w: w.get("start_time", ""), reverse=True)[:5]
+    save_json(LATEST_PATH, latest)
+    print(f"latest.json saved with {len(latest)} workouts")
+
+    # ----------------------------------------
+    # FIX 4: Prevent overwriting with empty intervals
     # ----------------------------------------
     if len(intervals) == 0:
-        print("No intervals found — NOT overwriting existing intervals.json")
+        print("No intervals found — NOT overwriting intervals.json")
         return
 
     # ----------------------------------------
@@ -112,7 +150,7 @@ def main():
     save_json(INTERVALS_PATH, intervals)
 
     # ----------------------------------------
-    # FIX 5B: Validate new file
+    # FIX 5B: Validate new intervals.json
     # ----------------------------------------
     try:
         new_data = json.loads(INTERVALS_PATH.read_text())
