@@ -28,7 +28,7 @@ jobs:
           mkdir -p CrankAddict_Section-11
           curl -s -S -o CrankAddict_Section-11/sync.py https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
 
-      # -----------------------------
+           # -----------------------------
       # 1. RUN SYNC WITH RETRIES
       # -----------------------------
       - name: Run sync.py with retries
@@ -62,16 +62,7 @@ jobs:
           head -n 20 intervals.json || echo "intervals.json missing"
 
       # -----------------------------
-      # 3. STALE FILE CHECK (AFTER RETRIES)
-      # -----------------------------
-      - name: Check for stale files
-        run: |
-          if [ ! -s latest.json ]; then echo "latest.json is empty"; exit 1; fi
-          if [ ! -s history.json ]; then echo "history.json is empty"; exit 1; fi
-          if [ ! -s intervals.json ]; then echo "intervals.json is empty"; exit 1; fi
-
-      # -----------------------------
-      # 4. MOVE FILES INTO /data
+      # 3. MOVE FILES INTO /data
       # -----------------------------
       - name: Move generated files into /data
         run: |
@@ -79,6 +70,15 @@ jobs:
           mv latest.json data/latest.json || echo "latest.json missing"
           mv history.json data/history.json || echo "history.json missing"
           mv intervals.json data/intervals.json || echo "intervals.json missing"
+
+      # -----------------------------
+      # 4. STALE FILE CHECK (AFTER MOVE)
+      # -----------------------------
+      - name: Check for stale files
+        run: |
+          if [ ! -s data/latest.json ]; then echo "latest.json is empty"; exit 1; fi
+          if [ ! -s data/history.json ]; then echo "history.json is empty"; exit 1; fi
+          if [ ! -s data/intervals.json ]; then echo "intervals.json is empty"; exit 1; fi
 
       # -----------------------------
       # 5. COPY DOSSIER
