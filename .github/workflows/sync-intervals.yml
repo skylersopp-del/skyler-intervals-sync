@@ -32,11 +32,11 @@ jobs:
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           INTERVALS_KEY: ${{ secrets.INTERVALS_API_KEY }}
-          INTERVALS_BASE_URL: "https://intervals.icu/api/v1/athlete/${{ secrets.INTERVALS_ATHLETE_ID }}/workouts?key=${{ secrets.INTERVALS_API_KEY }}&fields=all"
         run: |
           python3 CrankAddict_Section-11/sync.py \
             --athlete-id "$ATHLETE_ID" \
             --intervals-key "$INTERVALS_KEY" \
+            --intervals-base-url "https://intervals.icu/api/v1/athlete/$ATHLETE_ID/workouts?key=$INTERVALS_KEY&fields=all" \
             --output latest.json \
             --generate-history
 
@@ -52,12 +52,23 @@ jobs:
           ls -l data/
           cat data/latest.json | head -20 || echo "latest.json empty/missing"
 
+      - name: Debug sync outputs
+        run: |
+          echo "Files in working directory:"
+          ls -l .
+          echo "Preview latest.json:"
+          head -n 20 latest.json || echo "latest.json missing"
+          echo "Preview history.json:"
+          head -n 20 history.json || echo "history.json missing"
+          echo "Preview intervals.json:"
+          head -n 20 intervals.json || echo "intervals.json missing"    
+
       - name: Move generated files into /data
         run: |
           mkdir -p data
-          mv latest.json data/latest.json
-          mv history.json data/history.json
-          mv intervals.json data/intervals.json
+          mv latest.json data/latest.json || echo "latest.json missing"
+          mv history.json data/history.json || echo "history.json missing"
+          mv intervals.json data/intervals.json || echo "intervals.json missing"
 
       - name: Ensure DOSSIER.md in root and data
         run: |
