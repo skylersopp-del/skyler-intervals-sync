@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-20T20:26:34.767458",
+  "generated_at": "2026-03-20T20:28:25.139521",
   "source": "Intervals.icu API",
   "sync_version": "3.86",
   "data_range": {
@@ -3905,7 +3905,7 @@
       "total_hours": 0.5,
       "total_tss": 2,
       "activity_count": 2,
-      "activity_types": "Walk, Yoga",
+      "activity_types": "Yoga, Walk",
       "ctl": 16.243357,
       "atl": 31.78231,
       "tsb": -15.5,
