@@ -18,71 +18,50 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install requests
-
-      # ---------------------------------------------------------
-      # Load environment variables for LLM providers
-      # (You can add/remove providers as needed)
-      # ---------------------------------------------------------
-      - name: Export provider keys
         run: |
-          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
-          echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" >> $GITHUB_ENV
-          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> $GITHUB_ENV
-          echo "AZURE_OPENAI_API_KEY=${{ secrets.AZURE_OPENAI_API_KEY }}" >> $GITHUB_ENV
-          echo "AZURE_OPENAI_ENDPOINT=${{ secrets.AZURE_OPENAI_ENDPOINT }}" >> $GITHUB_ENV
+          python -m pip install --upgrade pip
+          pip install requests openai anthropic google-generativeai  # Add providers as needed; adjust for your script
 
-      # ---------------------------------------------------------
-      # Run the appropriate coaching mode depending on the schedule
-      # ---------------------------------------------------------
-      - name: Determine coaching mode
-        id: mode
+      - name: Run AI Coach (daily/weekly/sunday modes)
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
+          AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
         run: |
-          day=$(date +%u)
-
-          if [ "$day" -eq 1 ]; then
-            echo "mode=weekly" >> $GITHUB_OUTPUT
-          elif [ "$day" -eq 7 ]; then
-            echo "mode=analysis" >> $GITHUB_OUTPUT
-            echo "mode2=plan" >> $GITHUB_OUTPUT
-          else
-            echo "mode=daily" >> $GITHUB_OUTPUT
+          cd coach
+          # Run daily (default for most schedules)
+          python -m engine.run_coach --kind "daily" --provider "openai" --model "gpt-4o-mini" || echo "Daily failed, continuing..."
+          
+          # Conditional weekly (Mondays)
+          if [ "$(date +%u)" = "1" ]; then
+            python -m engine.run_coach --kind "weekly" --provider "openai" --model "gpt-4o-mini" || echo "Weekly failed..."
           fi
+          
+          # Conditional Sunday analysis/plan
+          if [ "$(date +%u)" = "7" ]; then
+            python -m engine.run_coach --kind "analysis" --provider "openai" --model "gpt-4o-mini" || echo "Analysis failed..."
+            python -m engine.run_coach --kind "plan" --provider "openai" --model "gpt-4o-mini" || echo "Plan failed..."
+          fi
+          
+          cd ..
 
-      # ---------------------------------------------------------
-      # Run the coach (multi-provider, model-agnostic)
-      # ---------------------------------------------------------
-      - name: Run primary coaching mode
+      - name: Commit coach outputs
         run: |
-          python coach/engine/run_coach.py \
-            --kind "${{ steps.mode.outputs.mode }}" \
-            --provider "openai" \
-            --model "gpt-4.1-mini"
-
-      - name: Run secondary mode (if applicable)
-        if: ${{ steps.mode.outputs.mode2 != '' }}
-        run: |
-          python coach/engine/run_coach.py \
-            --kind "${{ steps.mode.outputs.mode2 }}" \
-            --provider "openai" \
-            --model "gpt-4.1-mini"
-
-      # ---------------------------------------------------------
-      # Commit outputs
-      # ---------------------------------------------------------
-      - name: Commit coaching outputs
-        run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
           git add coach/outputs/*.md || true
-          git commit -m "Update coaching outputs [skip ci]" || echo "No changes"
-          git push || echo "Push skipped"
+          git commit -m 'Update AI Coach outputs (daily/weekly/analysis/plan) [skip ci]' || echo 'No coach changes to commit'
+          git push || echo 'Push skipped'
+
+      - name: Debug listing (post-run)
+        run: ls -l coach/outputs/
