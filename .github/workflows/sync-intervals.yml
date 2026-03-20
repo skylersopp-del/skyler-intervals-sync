@@ -46,6 +46,12 @@ jobs:
           ls -l data/
           cat data/latest.json | head -20 || echo "latest.json empty/missing"
 
+      - name: Move if needed
+        run: |
+          mv history.json data/history.json || true
+          mv latest.json data/latest.json || true
+          ls -l data/
+
       - name: Ensure DOSSIER.md in root and data
         run: |
           if [ -f DOSSIER.md ]; then
