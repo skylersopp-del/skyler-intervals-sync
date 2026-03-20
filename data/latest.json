@@ -11309,5 +11309,11 @@
       "PercentWmin": 100,
       "VO2MaxGarmin": 45.879661560058594
     }
-  ]
+  ],
+  "notes": null,
+  "description": null,
+  "icu_notes": null,
+  "comments": [],
+  "athlete_comments": [],
+  "coach_comments": []
 }
