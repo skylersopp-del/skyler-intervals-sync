@@ -90,13 +90,7 @@ jobs:
           mv intervals.json data/intervals.json || echo "intervals.json missing"
 
       # -----------------------------
-      # ⭐ 5. FULL DATA VALIDATION
-      # -----------------------------
-      - name: Validate data bundle
-        run: python3 scripts/validate_data.py
-
-      # -----------------------------
-      # 6. COPY DOSSIER
+      # 5. COPY DOSSIER
       # -----------------------------
       - name: Ensure DOSSIER.md in root and data
         run: |
@@ -108,13 +102,19 @@ jobs:
           ls -l DOSSIER.md data/DOSSIER.md
 
       # -----------------------------
-      # 7. ENRICH + NOTES INDEX
+      # 6. ENRICH + NOTES INDEX
       # -----------------------------
       - name: Post-process & enrich (intervals + notes)
         run: python3 scripts/enrich_notes.py
 
       - name: Build notes index
         run: python3 scripts/build_notes_index.py
+
+      # -----------------------------
+      # ⭐ 7. FULL DATA VALIDATION (AFTER ENRICHMENT)
+      # -----------------------------
+      - name: Validate data bundle
+        run: python3 scripts/validate_data.py
 
       # -----------------------------
       # 8. COMMIT CHANGES
