@@ -26,7 +26,8 @@ jobs:
       - name: Download Section 11 assets
         run: |
           mkdir -p CrankAddict_Section-11
-          curl -s -S -o CrankAddict_Section-11/sync.py https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
+          curl -s -S -o CrankAddict_Section-11/sync.py \
+            https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
 
       # -----------------------------
       # 1. RUN SYNC WITH RETRIES
@@ -48,19 +49,6 @@ jobs:
           done
 
       # -----------------------------
-      # Pull Full Workouts
-      # -----------------------------
-
-      - name: Pull full workouts (fields=all)
-        env:
-          ATHLETE_ID:  ${{ secrets.INTERVALS_ATHLETE_ID }}
-          INTERVALS_KEY: ${{ secrets.INTERVALS_API_KEY }}
-        run: |
-          curl -s -S \
-            "https://intervals.icu/api/v1/athlete/$ATHLETE_ID/workouts?days=30&fields=all&key=$INTERVALS_KEY" \
-            -o full_workouts.json
-
-      # -----------------------------
       # 2. DEBUG OUTPUTS
       # -----------------------------
       - name: Debug sync outputs
@@ -75,7 +63,24 @@ jobs:
           head -n 20 intervals.json || echo "intervals.json missing"
 
       # -----------------------------
-      # 3. MOVE FILES INTO /data
+      # ⭐ 3. PULL FULL WORKOUTS (fields=all)
+      # -----------------------------
+      - name: Pull full workouts (fields=all)
+        env:
+          ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
+          INTERVALS_KEY: ${{ secrets.INTERVALS_API_KEY }}
+        run: |
+          mkdir -p data
+          curl -s -S \
+            "https://intervals.icu/api/v1/athlete/$ATHLETE_ID/workouts?days=30&fields=all&key=$INTERVALS_KEY" \
+            -o data/full_workouts.json
+
+          echo "Downloaded full_workouts.json:"
+          ls -l data/full_workouts.json
+          head -n 20 data/full_workouts.json || true
+
+      # -----------------------------
+      # 4. MOVE FILES INTO /data
       # -----------------------------
       - name: Move generated files into /data
         run: |
@@ -85,7 +90,7 @@ jobs:
           mv intervals.json data/intervals.json || echo "intervals.json missing"
 
       # -----------------------------
-      # 4. STALE FILE CHECK (AFTER MOVE)
+      # 5. STALE FILE CHECK (AFTER MOVE)
       # -----------------------------
       - name: Check for stale files
         run: |
@@ -94,7 +99,7 @@ jobs:
           if [ ! -s data/intervals.json ]; then echo "intervals.json is empty"; exit 1; fi
 
       # -----------------------------
-      # 5. COPY DOSSIER
+      # 6. COPY DOSSIER
       # -----------------------------
       - name: Ensure DOSSIER.md in root and data
         run: |
@@ -106,7 +111,7 @@ jobs:
           ls -l DOSSIER.md data/DOSSIER.md
 
       # -----------------------------
-      # 6. ENRICH + NOTES INDEX
+      # 7. ENRICH + NOTES INDEX
       # -----------------------------
       - name: Post-process & enrich (intervals + notes)
         run: python3 scripts/enrich_notes.py
@@ -115,7 +120,7 @@ jobs:
         run: python3 scripts/build_notes_index.py
 
       # -----------------------------
-      # 7. COMMIT CHANGES
+      # 8. COMMIT CHANGES
       # -----------------------------
       - name: Commit
         run: |
