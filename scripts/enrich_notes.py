@@ -11,6 +11,16 @@ def main():
     print("Enrich start")
     intervals = []
 
+    if INTERVALS_PATH.exists():
+        try:
+            intervals = json.loads(INTERVALS_PATH.read_text())
+            print(f"Loaded {len(intervals)} intervals from sync.py")
+        except Exception as e:
+            print(f"Failed to load intervals.json: {e}")
+    else:
+        print("intervals.json not found — starting with empty list")
+
+
     # Debug CSV
     if CSV_PATH.exists():
         try:
