@@ -1,18 +1,5 @@
 [
   {
-    "date": "2025-12-19",
-    "notes": "",
-    "icu_notes": "",
-    "comments": [],
-    "athlete_comments": [],
-    "coach_comments": [],
-    "activity_count": 1,
-    "total_tss": 0,
-    "feel": null,
-    "soreness": null,
-    "fatigue": null
-  },
-  {
     "date": "2025-12-21",
     "notes": "",
     "icu_notes": "",
@@ -500,10 +487,62 @@
     "comments": [],
     "athlete_comments": [],
     "coach_comments": [],
-    "activity_count": 1,
-    "total_tss": 0,
+    "activity_count": 2,
+    "total_tss": 2,
     "feel": null,
     "soreness": 3,
+    "fatigue": 3
+  },
+  {
+    "date": "2026-03-16",
+    "notes": "",
+    "icu_notes": "",
+    "comments": [],
+    "athlete_comments": [],
+    "coach_comments": [],
+    "activity_count": 1,
+    "total_tss": 8,
+    "feel": null,
+    "soreness": 3,
+    "fatigue": 2
+  },
+  {
+    "date": "2026-03-17",
+    "notes": "",
+    "icu_notes": "",
+    "comments": [],
+    "athlete_comments": [],
+    "coach_comments": [],
+    "activity_count": 1,
+    "total_tss": 79,
+    "feel": null,
+    "soreness": null,
+    "fatigue": null
+  },
+  {
+    "date": "2026-03-18",
+    "notes": "",
+    "icu_notes": "",
+    "comments": [],
+    "athlete_comments": [],
+    "coach_comments": [],
+    "activity_count": 2,
+    "total_tss": 0,
+    "feel": null,
+    "soreness": 2,
+    "fatigue": 2
+  },
+  {
+    "date": "2026-03-20",
+    "notes": "",
+    "icu_notes": "",
+    "comments": [],
+    "athlete_comments": [],
+    "coach_comments": [],
+    "activity_count": 1,
+    "total_tss": 43,
+    "feel": null,
+    "soreness": 2,
     "fatigue": 3
   }
 ]
