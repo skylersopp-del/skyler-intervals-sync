@@ -90,13 +90,10 @@ jobs:
           mv intervals.json data/intervals.json || echo "intervals.json missing"
 
       # -----------------------------
-      # 5. STALE FILE CHECK (AFTER MOVE)
+      # ⭐ 5. FULL DATA VALIDATION
       # -----------------------------
-      - name: Check for stale files
-        run: |
-          if [ ! -s data/latest.json ]; then echo "latest.json is empty"; exit 1; fi
-          if [ ! -s data/history.json ]; then echo "history.json is empty"; exit 1; fi
-          if [ ! -s data/intervals.json ]; then echo "intervals.json is empty"; exit 1; fi
+      - name: Validate data bundle
+        run: python3 scripts/validate_data.py
 
       # -----------------------------
       # 6. COPY DOSSIER
