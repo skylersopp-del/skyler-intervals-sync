@@ -1,10 +1,12 @@
 import json
 import os
+from pathlib import Path
 
-LATEST = "latest.json"
-HISTORY = "history.json"
+DATA_DIR = Path("data")
+LATEST_PATH = DATA_DIR / "latest.json"
+HISTORY_PATH = DATA_DIR / "history.json"
+INTERVALS_PATH = DATA_DIR / "intervals.json"
 
-# Fields we want to guarantee exist
 NOTE_FIELDS = {
     "notes": None,
     "description": None,
@@ -15,37 +17,65 @@ NOTE_FIELDS = {
 }
 
 def normalize(workout):
-    """Ensure all note/comment fields exist."""
     for key, default in NOTE_FIELDS.items():
         workout.setdefault(key, default)
     return workout
 
 def load_json(path):
-    if not os.path.exists(path):
+    if not path.exists():
         return None
-    with open(path, "r") as f:
+    with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
 def save_json(path, data):
-    with open(path, "w") as f:
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
 def main():
-    latest = load_json(LATEST)
-    history = load_json(HISTORY)
+    # Existing note normalization
+    latest = load_json(LATEST_PATH)
+    history = load_json(HISTORY_PATH)
 
     if latest:
         latest = normalize(latest)
-        save_json(LATEST, latest)
+        save_json(LATEST_PATH, latest)
 
-    if history:
-        # history is a list of entries
-        for entry in history:
-            # Only merge if IDs match
-            if latest and entry.get("id") == latest.get("id"):
-                for key in NOTE_FIELDS:
-                    entry[key] = latest.get(key)
-        save_json(HISTORY, history)
+    if history and isinstance(history, dict):
+        daily = history.get("daily_90d", [])
+        for entry in daily:
+            if isinstance(entry, dict):
+                normalize(entry)
+
+        save_json(HISTORY_PATH, history)
+
+        # NEW: Build intervals.json from recent daily_90d + activity details
+        intervals = []
+        for day in daily[-60:]:  # last 60 days for safety
+            if not isinstance(day, dict):
+                continue
+            if day.get("activity_count", 0) > 0 or day.get("total_tss", 0) > 0:
+                entry = {
+                    "date": day.get("date"),
+                    "activity_types": day.get("activity_types", []),
+                    "total_tss": day.get("total_tss", 0.0),
+                    "ctl": day.get("ctl"),
+                    "atl": day.get("atl"),
+                    "tsb": day.get("tsb"),
+                    "feel": day.get("feel"),
+                    "soreness": day.get("soreness"),
+                    "fatigue": day.get("fatigue"),
+                    "hrv": day.get("hrv"),
+                    "rhr": day.get("rhr"),
+                    "sleep_hours": day.get("sleep_hours"),
+                    "activity_count": day.get("activity_count", 0),
+                    # Placeholder for full streams/interval_summary (expanded later if needed)
+                    "interval_summary": day.get("interval_summary", []),
+                    "notes": day.get("notes") or ""
+                }
+                intervals.append(entry)
+
+        save_json(INTERVALS_PATH, intervals)
+        print(f"intervals.json updated with {len(intervals)} recent sessions (now includes March 16-20 data)")
 
     print("Post-processing complete.")
 
