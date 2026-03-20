@@ -28,7 +28,7 @@ jobs:
           mkdir -p CrankAddict_Section-11
           curl -s -S -o CrankAddict_Section-11/sync.py https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
 
-           # -----------------------------
+      # -----------------------------
       # 1. RUN SYNC WITH RETRIES
       # -----------------------------
       - name: Run sync.py with retries
@@ -46,6 +46,19 @@ jobs:
             echo "Retry $i failed, retrying..."
             sleep 5
           done
+
+      # -----------------------------
+      # Pull Full Workouts
+      # -----------------------------
+
+      - name: Pull full workouts (fields=all)
+        env:
+          ATHLETE_ID:  ${{ secrets.INTERVALS_ATHLETE_ID }}
+          INTERVALS_KEY: ${{ secrets.INTERVALS_API_KEY }}
+        run: |
+          curl -s -S \
+            "https://intervals.icu/api/v1/athlete/$ATHLETE_ID/workouts?days=30&fields=all&key=$INTERVALS_KEY" \
+            -o full_workouts.json
 
       # -----------------------------
       # 2. DEBUG OUTPUTS
