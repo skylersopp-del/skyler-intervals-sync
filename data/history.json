@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-20T19:29:40.887884",
+  "generated_at": "2026-03-20T20:26:34.767458",
   "source": "Intervals.icu API",
   "sync_version": "3.86",
   "data_range": {
@@ -246,13 +246,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2025-12-22",
@@ -296,13 +290,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2025-12-23",
@@ -346,13 +334,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2025-12-24",
@@ -396,13 +378,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2025-12-25",
@@ -446,13 +422,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2025-12-26",
@@ -496,13 +466,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2025-12-27",
@@ -546,13 +510,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2025-12-28",
@@ -596,13 +554,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2025-12-29",
@@ -646,13 +598,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2025-12-30",
@@ -696,13 +642,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2025-12-31",
@@ -746,13 +686,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-01",
@@ -796,13 +730,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-02",
@@ -846,13 +774,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-03",
@@ -896,13 +818,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-04",
@@ -946,13 +862,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-05",
@@ -996,13 +906,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-06",
@@ -1046,13 +950,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-07",
@@ -1096,13 +994,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-08",
@@ -1146,13 +1038,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-09",
@@ -1196,13 +1082,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-10",
@@ -1246,13 +1126,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-11",
@@ -1296,13 +1170,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-12",
@@ -1346,13 +1214,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-13",
@@ -1396,13 +1258,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-14",
@@ -1446,13 +1302,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-15",
@@ -1496,13 +1346,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-16",
@@ -1546,13 +1390,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-17",
@@ -1596,13 +1434,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-18",
@@ -1646,13 +1478,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-19",
@@ -1696,13 +1522,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-20",
@@ -1746,13 +1566,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-21",
@@ -1796,13 +1610,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-22",
@@ -1846,13 +1654,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-23",
@@ -1896,13 +1698,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-24",
@@ -1946,13 +1742,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-25",
@@ -1996,13 +1786,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-26",
@@ -2046,13 +1830,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-27",
@@ -2096,13 +1874,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-28",
@@ -2146,13 +1918,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-29",
@@ -2196,13 +1962,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-30",
@@ -2246,13 +2006,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-01-31",
@@ -2296,13 +2050,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-01",
@@ -2346,13 +2094,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-02",
@@ -2396,13 +2138,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-03",
@@ -2446,13 +2182,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-04",
@@ -2496,13 +2226,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-05",
@@ -2546,13 +2270,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-06",
@@ -2596,13 +2314,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-07",
@@ -2646,13 +2358,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-08",
@@ -2696,13 +2402,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-09",
@@ -2746,13 +2446,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-10",
@@ -2796,13 +2490,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-11",
@@ -2846,13 +2534,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-12",
@@ -2896,13 +2578,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-13",
@@ -2946,13 +2622,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-14",
@@ -2996,13 +2666,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-15",
@@ -3046,13 +2710,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-16",
@@ -3096,13 +2754,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-17",
@@ -3146,13 +2798,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-18",
@@ -3196,13 +2842,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-19",
@@ -3246,13 +2886,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-20",
@@ -3296,13 +2930,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-21",
@@ -3346,13 +2974,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-22",
@@ -3396,13 +3018,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-23",
@@ -3446,13 +3062,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-24",
@@ -3496,13 +3106,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-25",
@@ -3546,13 +3150,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-26",
@@ -3596,13 +3194,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-27",
@@ -3646,13 +3238,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-02-28",
@@ -3696,13 +3282,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-01",
@@ -3746,13 +3326,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-02",
@@ -3796,13 +3370,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-03",
@@ -3846,13 +3414,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-04",
@@ -3896,13 +3458,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-05",
@@ -3946,13 +3502,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-06",
@@ -3996,13 +3546,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-07",
@@ -4046,13 +3590,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-08",
@@ -4096,13 +3634,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-09",
@@ -4146,13 +3678,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-10",
@@ -4196,13 +3722,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-11",
@@ -4246,20 +3766,14 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-12",
       "total_hours": 1.67,
       "total_tss": 15,
       "activity_count": 2,
-      "activity_types": "Unknown, Walk",
+      "activity_types": "Walk, Unknown",
       "ctl": 13.83782,
       "atl": 23.831991,
       "tsb": -10.0,
@@ -4296,20 +3810,14 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-13",
       "total_hours": 1.81,
       "total_tss": 46,
       "activity_count": 2,
-      "activity_types": "Run, VirtualRun",
+      "activity_types": "VirtualRun, Run",
       "ctl": 14.594542,
       "atl": 26.783043,
       "tsb": -12.2,
@@ -4346,13 +3854,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-14",
@@ -4396,13 +3898,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-15",
@@ -4446,13 +3942,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-16",
@@ -4496,13 +3986,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-17",
@@ -4546,20 +4030,14 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-18",
       "total_hours": 1.3,
       "total_tss": 0,
       "activity_count": 2,
-      "activity_types": "Unknown, Walk",
+      "activity_types": "Walk, Unknown",
       "ctl": 16.96551,
       "atl": 29.820885,
       "tsb": -12.9,
@@ -4596,13 +4074,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-19",
@@ -4646,13 +4118,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     },
     {
       "date": "2026-03-20",
@@ -4696,13 +4162,7 @@
       "fat_g": null,
       "menstrual_phase": null,
       "menstrual_phase_predicted": null,
-      "readiness": null,
-      "notes": null,
-      "description": null,
-      "icu_notes": null,
-      "comments": [],
-      "athlete_comments": [],
-      "coach_comments": []
+      "readiness": null
     }
   ],
   "weekly_180d": [
