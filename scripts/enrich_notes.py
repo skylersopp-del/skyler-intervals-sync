@@ -3,13 +3,14 @@ import pandas as pd
 from pathlib import Path
 
 DATA_DIR = Path("data")
-LATEST_PATH = DATA_DIR / "latest.json"
 HISTORY_PATH = DATA_DIR / "history.json"
 INTERVALS_PATH = DATA_DIR / "intervals.json"
 ACTIVITIES_CSV = DATA_DIR / "activities.csv"
 
 def load_json(path):
-    if not path.exists(): return None
+    if not path.exists():
+        print(f"{path} missing")
+        return None
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
@@ -19,16 +20,25 @@ def save_json(path, data):
 
 def main():
     history = load_json(HISTORY_PATH)
-    latest = load_json(LATEST_PATH)
 
-    # Existing note normalization
-    if latest: save_json(LATEST_PATH, latest)
-
-    # NEW: Detailed intervals.json from activities.csv + history daily_90d
-    intervals = []
+    # Debug CSV load
     if ACTIVITIES_CSV.exists():
-        df = pd.read_csv(ACTIVITIES_CSV)
-        for _, row in df.tail(60).iterrows():  # last 60 days
+        try:
+            df = pd.read_csv(ACTIVITIES_CSV)
+            print(f"CSV loaded with {len(df)} rows")
+            print(df.tail(5))  # show recent
+        except Exception as e:
+            print(f"CSV error: {e}")
+            df = pd.DataFrame()
+    else:
+        print("activities.csv missing")
+        df = pd.DataFrame()
+
+    intervals = []
+    if not df.empty:
+        for _, row in df.tail(60).iterrows():
+            if pd.isna(row.get("Date")) or pd.isna(row.get("Name")):
+                continue  # skip invalid rows
             entry = {
                 "date": row.get("Date"),
                 "name": row.get("Name"),
@@ -41,35 +51,38 @@ def main():
                 "ftp": row.get("FTP"),
                 "weight": row.get("Weight"),
                 "w_prime": row.get("W'"),
-                "interval_summary": [],  # placeholder; expand later if streams added
+                "interval_summary": [],  # expand if streams in CSV
                 "notes": row.get("Name") or "",
                 "ctl": None,
                 "atl": None,
                 "tsb": None
             }
             intervals.append(entry)
+    else:
+        print("No valid CSV data - skipping intervals append")
 
-    # Merge history daily wellness/CTL for extra context
+    # Merge history daily
     if history and isinstance(history, dict):
         daily = history.get("daily_90d", [])
         for entry in intervals:
-            date_match = next((d for d in daily if d.get("date") == entry["date"]), None)
-            if date_match:
+            date_str = entry["date"]
+            match = next((d for d in daily if d.get("date") == date_str), None)
+            if match:
                 entry.update({
-                    "ctl": date_match.get("ctl"),
-                    "atl": date_match.get("atl"),
-                    "tsb": date_match.get("tsb"),
-                    "feel": date_match.get("feel"),
-                    "soreness": date_match.get("soreness"),
-                    "fatigue": date_match.get("fatigue"),
-                    "hrv": date_match.get("hrv"),
-                    "rhr": date_match.get("rhr")
+                    "ctl": match.get("ctl"),
+                    "atl": match.get("atl"),
+                    "tsb": match.get("tsb"),
+                    "feel": match.get("feel"),
+                    "soreness": match.get("soreness"),
+                    "fatigue": match.get("fatigue"),
+                    "hrv": match.get("hrv"),
+                    "rhr": match.get("rhr")
                 })
 
     save_json(INTERVALS_PATH, intervals)
-    print(f"intervals.json updated with {len(intervals)} detailed sessions (streams + wellness merged)")
+    print(f"intervals.json saved with {len(intervals)} entries (filtered non-null)")
 
-    print("Post-processing complete.")
+    print("Enrich complete.")
 
 if __name__ == "__main__":
     main()
