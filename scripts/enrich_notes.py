@@ -21,39 +21,56 @@ def main():
         print("intervals.json not found — starting with empty list")
 
 
-    # Debug CSV
-    if CSV_PATH.exists():
-        try:
-            df = pd.read_csv(CSV_PATH)
-            print(f"CSV rows: {len(df)}")
-            print("Columns:", df.columns.tolist())
-            print("Tail 5 rows:\n", df.tail(5).to_string())
-            for _, row in df.tail(60).iterrows():
-                if pd.isna(row.get("Date")) or pd.isna(row.get("Name")):
-                    continue
-                entry = {
-                    "date": row.get("Date"),
+# ----------------------------------------
+# FIX 3: Merge CSV data into existing intervals
+# ----------------------------------------
+
+# Build a lookup table for fast merging by date
+intervals_by_date = {entry.get("date"): entry for entry in intervals}
+
+if CSV_PATH.exists():
+    try:
+         df = pd.read_csv(CSV_PATH)
+         print(f"CSV rows: {len(df)}")
+         print("Columns:", df.columns.tolist())
+
+         for _, row in df.tail(60).iterrows():
+            date = row.get("Date")
+            if pd.isna(date):
+                continue
+
+            # If this workout already exists from Intervals.icu → enrich it
+             
+            if date in intervals_by_date:
+                entry = intervals_by_date[date]
+                entry.update({
+                    "csv_distance": row.get("Distance"),
+                    "csv_moving_time": row.get("Moving Time"),
+                    "csv_avg_hr": row.get("Avg HR"),
+                    "csv_norm_power": row.get("Norm Power"),
+                    "csv_tss": row.get("Load"),
+                    "csv_ftp": row.get("FTP"),
+                    "csv_weight": row.get("Weight"),
+                })
+            else:
+                # Optional: include CSV-only workouts
+                intervals.append({
+                    "date": date,
                     "name": row.get("Name"),
-                    "type": row.get("Type"),
-                    "distance": row.get("Distance"),
-                    "moving_time": row.get("Moving Time"),
-                    "avg_hr": row.get("Avg HR"),
-                    "norm_power": row.get("Norm Power"),
-                    "tss": row.get("Load"),
-                    "ftp": row.get("FTP"),
-                    "weight": row.get("Weight"),
-                    "w_prime": row.get("W'"),
-                    "interval_summary": [],
-                    "notes": row.get("Name") or "",
-                    "ctl": None,
-                    "atl": None,
-                    "tsb": None
-                }
-                intervals.append(entry)
-        except Exception as e:
-            print(f"CSV load failed: {e}")
-    else:
-        print("activities.csv not found")
+                    "source": "csv_only",
+                    "csv_distance": row.get("Distance"),
+                    "csv_moving_time": row.get("Moving Time"),
+                    "csv_avg_hr": row.get("Avg HR"),
+                    "csv_norm_power": row.get("Norm Power"),
+                    "csv_tss": row.get("Load"),
+                    "csv_ftp": row.get("FTP"),
+                    "csv_weight": row.get("Weight"),
+                })
+
+    except Exception as e:
+        print(f"CSV load failed: {e}")
+else:
+    print("activities.csv not found")
 
     # Merge history if available
     history = None
