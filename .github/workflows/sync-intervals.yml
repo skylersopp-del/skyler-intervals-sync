@@ -28,17 +28,18 @@ jobs:
           mkdir -p CrankAddict_Section-11
           curl -s -S -o CrankAddict_Section-11/sync.py https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
 
-      - name: Run official sync.py (force latest + history)
+      - name: Run official sync.py (direct to data/)
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           INTERVALS_KEY: ${{ secrets.INTERVALS_API_KEY }}
         run: |
+          mkdir -p data
           python3 CrankAddict_Section-11/sync.py \
             --athlete-id "$ATHLETE_ID" \
             --intervals-key "$INTERVALS_KEY" \
             --output data/latest.json \
-            --generate-history
-          ls -l data/
+            --generate-history data/history.json  # try explicit history path if script supports
+          ls -l data/  # debug
 
       - name: Debug sync outputs
         run: |
