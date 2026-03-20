@@ -45,10 +45,13 @@ jobs:
           ls -l data/
           cat data/latest.json | head -20 || echo "latest.json empty/missing"
 
-      - name: Copy DOSSIER.md to root (protocol fix)
+      - name: Ensure DOSSIER.md in root and data
         run: |
-          cp coach/DOSSIER.md DOSSIER.md || echo "DOSSIER copy failed"
-          cp coach/DOSSIER.md data/DOSSIER.md || true
+          if [ -f DOSSIER.md ]; then
+            cp DOSSIER.md data/DOSSIER.md || echo "Copy to data failed"
+          else
+            echo "DOSSIER.md missing in root - manual fix needed"
+          fi
           ls -l DOSSIER.md data/DOSSIER.md
 
       - name: Post-process & enrich (intervals + notes)
