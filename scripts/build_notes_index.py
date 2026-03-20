@@ -22,6 +22,9 @@ def main():
     notes_index = []
 
     for w in history:
+        if not isinstance(w, dict):
+            print(f"Skipping invalid entry (not dict): {w}")
+            continue
         entry = {
             "id": w.get("id"),
             "date": w.get("start_date_local"),
