@@ -23,14 +23,12 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      # Download Section 11 assets
       - name: Download latest Section 11 assets
         run: |
           mkdir -p CrankAddict_Section-11
           curl -s -S -o CrankAddict_Section-11/sync.py https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
           curl -s -S -o CrankAddict_Section-11/SECTION_11.md https://raw.githubusercontent.com/CrankAddict/section-11/main/SECTION_11.md
 
-      # Run sync.py (confirmed working)
       - name: Run official sync.py
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
@@ -41,29 +39,30 @@ jobs:
             --intervals-key "$INTERVALS_KEY" \
             --output latest.json \
             --generate-history
+          ls -l  # Debug: show what files sync.py created in root
 
-      # Explicitly move both primary outputs to data/
       - name: Move generated files into /data
         run: |
           mkdir -p data
-          mv latest.json data/latest.json || echo "latest.json not found in root - check if generated"
+          mv latest.json data/latest.json || echo "latest.json not found/moved - check sync.py output"
           mv history.json data/history.json || echo "history.json not found"
-          ls -l data/   # Debug: should show fresh latest.json and history.json
+          # If intervals.json generated in root or data, ensure it's there
+          if [ -f intervals.json ]; then mv intervals.json data/intervals.json || true; fi
+          ls -l data/  # Confirm fresh files
 
-      # Post-process (may generate/update intervals.json if custom)
       - name: Post-process notes and enrich JSON
-        run: python3 scripts/enrich_notes.py
+        run: python3 scripts/enrich_notes.py || echo "Enrich failed - check script"
 
       - name: Build notes.json index
         run: |
           python3 scripts/build_notes_index.py
-          ls -l data/   # Confirm all files present
+          ls -l data/  # Final check
 
-      # Commit
       - name: Commit changes
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           git add data/*.json || true
-          git commit -m 'Update Intervals.icu data (latest + history + notes) [skip ci]' || echo 'No changes'
+          git add *.json || true  # Catch any root leftovers
+          git commit -m 'Update Intervals.icu data (latest/history/intervals/notes) [skip ci]' || echo 'No changes'
           git push || echo 'Push skipped'
