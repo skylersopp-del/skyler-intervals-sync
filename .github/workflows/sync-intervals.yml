@@ -40,6 +40,11 @@ jobs:
             --generate-history
           ls -l data/
 
+      - name: Debug sync outputs
+        run: |
+          ls -l data/
+          cat data/latest.json | head -20 || echo "latest.json empty/missing"
+
       - name: Copy DOSSIER.md to root (protocol fix)
         run: |
           cp coach/DOSSIER.md DOSSIER.md || echo "DOSSIER copy failed"
