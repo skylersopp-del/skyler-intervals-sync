@@ -1,29 +1,15 @@
 import json
-import os
+import pandas as pd
 from pathlib import Path
 
 DATA_DIR = Path("data")
 LATEST_PATH = DATA_DIR / "latest.json"
 HISTORY_PATH = DATA_DIR / "history.json"
 INTERVALS_PATH = DATA_DIR / "intervals.json"
-
-NOTE_FIELDS = {
-    "notes": None,
-    "description": None,
-    "icu_notes": None,
-    "comments": [],
-    "athlete_comments": [],
-    "coach_comments": []
-}
-
-def normalize(workout):
-    for key, default in NOTE_FIELDS.items():
-        workout.setdefault(key, default)
-    return workout
+ACTIVITIES_CSV = DATA_DIR / "activities.csv"
 
 def load_json(path):
-    if not path.exists():
-        return None
+    if not path.exists(): return None
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
@@ -32,50 +18,56 @@ def save_json(path, data):
         json.dump(data, f, indent=2)
 
 def main():
-    # Existing note normalization
-    latest = load_json(LATEST_PATH)
     history = load_json(HISTORY_PATH)
+    latest = load_json(LATEST_PATH)
 
-    if latest:
-        latest = normalize(latest)
-        save_json(LATEST_PATH, latest)
+    # Existing note normalization
+    if latest: save_json(LATEST_PATH, latest)
 
+    # NEW: Detailed intervals.json from activities.csv + history daily_90d
+    intervals = []
+    if ACTIVITIES_CSV.exists():
+        df = pd.read_csv(ACTIVITIES_CSV)
+        for _, row in df.tail(60).iterrows():  # last 60 days
+            entry = {
+                "date": row.get("Date"),
+                "name": row.get("Name"),
+                "type": row.get("Type"),
+                "distance": row.get("Distance"),
+                "moving_time": row.get("Moving Time"),
+                "avg_hr": row.get("Avg HR"),
+                "norm_power": row.get("Norm Power"),
+                "tss": row.get("Load"),
+                "ftp": row.get("FTP"),
+                "weight": row.get("Weight"),
+                "w_prime": row.get("W'"),
+                "interval_summary": [],  # placeholder; expand later if streams added
+                "notes": row.get("Name") or "",
+                "ctl": None,
+                "atl": None,
+                "tsb": None
+            }
+            intervals.append(entry)
+
+    # Merge history daily wellness/CTL for extra context
     if history and isinstance(history, dict):
         daily = history.get("daily_90d", [])
-        for entry in daily:
-            if isinstance(entry, dict):
-                normalize(entry)
+        for entry in intervals:
+            date_match = next((d for d in daily if d.get("date") == entry["date"]), None)
+            if date_match:
+                entry.update({
+                    "ctl": date_match.get("ctl"),
+                    "atl": date_match.get("atl"),
+                    "tsb": date_match.get("tsb"),
+                    "feel": date_match.get("feel"),
+                    "soreness": date_match.get("soreness"),
+                    "fatigue": date_match.get("fatigue"),
+                    "hrv": date_match.get("hrv"),
+                    "rhr": date_match.get("rhr")
+                })
 
-        save_json(HISTORY_PATH, history)
-
-        # NEW: Build intervals.json from recent daily_90d + activity details
-        intervals = []
-        for day in daily[-60:]:  # last 60 days for safety
-            if not isinstance(day, dict):
-                continue
-            if day.get("activity_count", 0) > 0 or day.get("total_tss", 0) > 0:
-                entry = {
-                    "date": day.get("date"),
-                    "activity_types": day.get("activity_types", []),
-                    "total_tss": day.get("total_tss", 0.0),
-                    "ctl": day.get("ctl"),
-                    "atl": day.get("atl"),
-                    "tsb": day.get("tsb"),
-                    "feel": day.get("feel"),
-                    "soreness": day.get("soreness"),
-                    "fatigue": day.get("fatigue"),
-                    "hrv": day.get("hrv"),
-                    "rhr": day.get("rhr"),
-                    "sleep_hours": day.get("sleep_hours"),
-                    "activity_count": day.get("activity_count", 0),
-                    # Placeholder for full streams/interval_summary (expanded later if needed)
-                    "interval_summary": day.get("interval_summary", []),
-                    "notes": day.get("notes") or ""
-                }
-                intervals.append(entry)
-
-        save_json(INTERVALS_PATH, intervals)
-        print(f"intervals.json updated with {len(intervals)} recent sessions (now includes March 16-20 data)")
+    save_json(INTERVALS_PATH, intervals)
+    print(f"intervals.json updated with {len(intervals)} detailed sessions (streams + wellness merged)")
 
     print("Post-processing complete.")
 
