@@ -28,30 +28,28 @@ jobs:
           mkdir -p CrankAddict_Section-11
           curl -s -S -o CrankAddict_Section-11/sync.py https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
 
-      - name: Run official sync.py
+      # -----------------------------
+      # 1. RUN SYNC WITH RETRIES
+      # -----------------------------
+      - name: Run sync.py with retries
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           INTERVALS_KEY: ${{ secrets.INTERVALS_API_KEY }}
         run: |
-          python3 CrankAddict_Section-11/sync.py \
-            --athlete-id "$ATHLETE_ID" \
-            --intervals-key "$INTERVALS_KEY" \
-            --intervals-base-url "https://intervals.icu/api/v1/athlete/$ATHLETE_ID/workouts?key=$INTERVALS_KEY&fields=all" \
-            --output latest.json \
-            --generate-history
+          for i in 1 2 3; do
+            echo "Attempt $i..."
+            python3 CrankAddict_Section-11/sync.py \
+              --athlete-id "$ATHLETE_ID" \
+              --intervals-key "$INTERVALS_KEY" \
+              --output latest.json \
+              --generate-history && break
+            echo "Retry $i failed, retrying..."
+            sleep 5
+          done
 
-      - name: Debug generated files
-        run: |
-          echo "Generated files:"
-          ls -l .
-          echo "Preview intervals.json:"
-          head -n 50 intervals.json || true
-
-      - name: Debug sync outputs
-        run: |
-          ls -l data/
-          cat data/latest.json | head -20 || echo "latest.json empty/missing"
-
+      # -----------------------------
+      # 2. DEBUG OUTPUTS
+      # -----------------------------
       - name: Debug sync outputs
         run: |
           echo "Files in working directory:"
@@ -61,8 +59,20 @@ jobs:
           echo "Preview history.json:"
           head -n 20 history.json || echo "history.json missing"
           echo "Preview intervals.json:"
-          head -n 20 intervals.json || echo "intervals.json missing"    
+          head -n 20 intervals.json || echo "intervals.json missing"
 
+      # -----------------------------
+      # 3. STALE FILE CHECK (AFTER RETRIES)
+      # -----------------------------
+      - name: Check for stale files
+        run: |
+          if [ ! -s latest.json ]; then echo "latest.json is empty"; exit 1; fi
+          if [ ! -s history.json ]; then echo "history.json is empty"; exit 1; fi
+          if [ ! -s intervals.json ]; then echo "intervals.json is empty"; exit 1; fi
+
+      # -----------------------------
+      # 4. MOVE FILES INTO /data
+      # -----------------------------
       - name: Move generated files into /data
         run: |
           mkdir -p data
@@ -70,6 +80,9 @@ jobs:
           mv history.json data/history.json || echo "history.json missing"
           mv intervals.json data/intervals.json || echo "intervals.json missing"
 
+      # -----------------------------
+      # 5. COPY DOSSIER
+      # -----------------------------
       - name: Ensure DOSSIER.md in root and data
         run: |
           if [ -f DOSSIER.md ]; then
@@ -79,12 +92,18 @@ jobs:
           fi
           ls -l DOSSIER.md data/DOSSIER.md
 
+      # -----------------------------
+      # 6. ENRICH + NOTES INDEX
+      # -----------------------------
       - name: Post-process & enrich (intervals + notes)
         run: python3 scripts/enrich_notes.py
 
       - name: Build notes index
         run: python3 scripts/build_notes_index.py
 
+      # -----------------------------
+      # 7. COMMIT CHANGES
+      # -----------------------------
       - name: Commit
         run: |
           git config --global user.name 'GitHub Action'
