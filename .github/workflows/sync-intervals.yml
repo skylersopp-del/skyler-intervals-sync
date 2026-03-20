@@ -23,18 +23,14 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      # ---------------------------------------------------------
-      # STEP 1: Download latest Section 11 assets
-      # ---------------------------------------------------------
+      # Download Section 11 assets
       - name: Download latest Section 11 assets
         run: |
           mkdir -p CrankAddict_Section-11
           curl -s -S -o CrankAddict_Section-11/sync.py https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
           curl -s -S -o CrankAddict_Section-11/SECTION_11.md https://raw.githubusercontent.com/CrankAddict/section-11/main/SECTION_11.md
 
-      # ---------------------------------------------------------
-      # STEP 2: Run official sync.py (now confirmed working)
-      # ---------------------------------------------------------
+      # Run sync.py (confirmed working)
       - name: Run official sync.py
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
@@ -46,34 +42,28 @@ jobs:
             --output latest.json \
             --generate-history
 
-      # ---------------------------------------------------------
-      # STEP 3: Move fresh files into data/ (NEW - fixes staleness)
-      # ---------------------------------------------------------
+      # Explicitly move both primary outputs to data/
       - name: Move generated files into /data
         run: |
           mkdir -p data
-          mv latest.json data/latest.json || true
-          mv history.json data/history.json || true
-          ls -l data/  # debug confirmation
+          mv latest.json data/latest.json || echo "latest.json not found in root - check if generated"
+          mv history.json data/history.json || echo "history.json not found"
+          ls -l data/   # Debug: should show fresh latest.json and history.json
 
-      # ---------------------------------------------------------
-      # STEP 4: Post-process (enrich + notes index)
-      # ---------------------------------------------------------
+      # Post-process (may generate/update intervals.json if custom)
       - name: Post-process notes and enrich JSON
         run: python3 scripts/enrich_notes.py
 
       - name: Build notes.json index
         run: |
           python3 scripts/build_notes_index.py
-          ls -l data/
+          ls -l data/   # Confirm all files present
 
-      # ---------------------------------------------------------
-      # STEP 5: Commit
-      # ---------------------------------------------------------
+      # Commit
       - name: Commit changes
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           git add data/*.json || true
-          git commit -m 'Update Intervals.icu data + notes index [skip ci]' || echo 'No changes'
+          git commit -m 'Update Intervals.icu data (latest + history + notes) [skip ci]' || echo 'No changes'
           git push || echo 'Push skipped'
