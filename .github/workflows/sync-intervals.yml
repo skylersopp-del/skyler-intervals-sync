@@ -21,15 +21,14 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install requests
+        run: pip install requests pandas
 
-      - name: Download latest Section 11 assets
+      - name: Download Section 11 assets
         run: |
           mkdir -p CrankAddict_Section-11
           curl -s -S -o CrankAddict_Section-11/sync.py https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/sync.py
-          curl -s -S -o CrankAddict_Section-11/SECTION_11.md https://raw.githubusercontent.com/CrankAddict/section-11/main/SECTION_11.md
 
-      - name: Run official sync.py
+      - name: Run official sync.py (force latest + history)
         env:
           ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           INTERVALS_KEY: ${{ secrets.INTERVALS_API_KEY }}
@@ -37,32 +36,26 @@ jobs:
           python3 CrankAddict_Section-11/sync.py \
             --athlete-id "$ATHLETE_ID" \
             --intervals-key "$INTERVALS_KEY" \
-            --output latest.json \
+            --output data/latest.json \
             --generate-history
-          ls -l  # Debug: show what files sync.py created in root
+          ls -l data/
 
-      - name: Move generated files into /data
+      - name: Copy DOSSIER.md to root (protocol fix)
         run: |
-          mkdir -p data
-          mv latest.json data/latest.json || echo "latest.json not found/moved - check sync.py output"
-          mv history.json data/history.json || echo "history.json not found"
-          # If intervals.json generated in root or data, ensure it's there
-          if [ -f intervals.json ]; then mv intervals.json data/intervals.json || true; fi
-          ls -l data/  # Confirm fresh files
+          cp coach/DOSSIER.md DOSSIER.md || echo "DOSSIER copy failed"
+          cp coach/DOSSIER.md data/DOSSIER.md || true
+          ls -l DOSSIER.md data/DOSSIER.md
 
-      - name: Post-process notes and enrich JSON
-        run: python3 scripts/enrich_notes.py || echo "Enrich failed - check script"
+      - name: Post-process & enrich (intervals + notes)
+        run: python3 scripts/enrich_notes.py
 
-      - name: Build notes.json index
-        run: |
-          python3 scripts/build_notes_index.py
-          ls -l data/  # Final check
+      - name: Build notes index
+        run: python3 scripts/build_notes_index.py
 
-      - name: Commit changes
+      - name: Commit
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add data/*.json || true
-          git add *.json || true  # Catch any root leftovers
-          git commit -m 'Update Intervals.icu data (latest/history/intervals/notes) [skip ci]' || echo 'No changes'
+          git add data/*.json DOSSIER.md || true
+          git commit -m 'Update Intervals.icu data (latest/history/intervals/notes + DOSSIER) [skip ci]' || echo 'No changes'
           git push || echo 'Push skipped'
